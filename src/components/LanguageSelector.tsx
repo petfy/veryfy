@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Globe } from "lucide-react";
 import {
   DropdownMenu,
@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 const SUPPORTED_LANGUAGES = [
   { code: "en", name: "English" },
@@ -17,7 +18,7 @@ const SUPPORTED_LANGUAGES = [
 ];
 
 export function LanguageSelector() {
-  const [currentLanguage, setCurrentLanguage] = useState("en");
+  const { currentLanguage, setCurrentLanguage } = useTranslation();
 
   useEffect(() => {
     detectUserLanguage();
@@ -27,14 +28,12 @@ export function LanguageSelector() {
     try {
       const browserLang = navigator.language.split("-")[0];
       
-      // Call Google Translate API to detect language of some sample text
       const { data: { text } } = await supabase.functions.invoke('detect-language', {
         body: { text: "Welcome to our platform" }
       });
 
       const detectedLang = text || browserLang;
       
-      // Only set if it's a supported language
       if (SUPPORTED_LANGUAGES.some(lang => lang.code === detectedLang)) {
         setCurrentLanguage(detectedLang);
       }
@@ -45,8 +44,6 @@ export function LanguageSelector() {
 
   const handleLanguageChange = async (langCode: string) => {
     setCurrentLanguage(langCode);
-    // Here you would typically update your app's translations
-    // For now, we'll just log the change
     console.log(`Language changed to: ${langCode}`);
   };
 

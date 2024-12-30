@@ -4,11 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, ShieldCheck, AlertOctagon, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LanguageSelector } from "./LanguageSelector";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Check initial session
@@ -54,10 +56,9 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex h-screen">
-        {/* Sidebar */}
         <div className="w-64 bg-primary text-white">
           <div className="p-4 flex justify-between items-center">
-            <h1 className="text-xl font-bold">Verify.link Admin</h1>
+            <h1 className="text-xl font-bold">{t("verifyLink")}</h1>
             <LanguageSelector />
           </div>
           <nav className="mt-8">
@@ -66,21 +67,21 @@ export default function AdminLayout() {
               className="flex items-center px-4 py-3 text-white hover:bg-primary/80"
             >
               <LayoutDashboard className="mr-3" />
-              Dashboard
+              {t("dashboard")}
             </Link>
             <Link
               to="/admin/verifications"
               className="flex items-center px-4 py-3 text-white hover:bg-primary/80"
             >
               <ShieldCheck className="mr-3" />
-              Store Verifications
+              {t("storeVerifications")}
             </Link>
             <Link
               to="/admin/reports"
               className="flex items-center px-4 py-3 text-white hover:bg-primary/80"
             >
               <AlertOctagon className="mr-3" />
-              Scam Reports
+              {t("scamReports")}
             </Link>
           </nav>
           <div className="absolute bottom-0 w-64 p-4">
@@ -89,12 +90,11 @@ export default function AdminLayout() {
               className="flex items-center px-4 py-3 text-white hover:bg-primary/80 w-full"
             >
               <LogOut className="mr-3" />
-              Sign Out
+              {t("signOut")}
             </button>
           </div>
         </div>
 
-        {/* Main content */}
         <div className="flex-1 overflow-auto">
           <div className="p-8">
             <Outlet />
