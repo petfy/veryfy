@@ -70,7 +70,7 @@ const Index = () => {
           <div className="relative w-full">
             {/* Highlight box around TopBar */}
             <div className="absolute top-0 left-0 right-0 border-2 border-primary animate-pulse">
-              <div className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 bg-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce">
+              <div className="absolute top-full mt-4 left-1/2 transform -translate-x-1/2 bg-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce">
                 <span className="text-lg font-semibold text-primary">
                   Get your official Veryfy Trust Badge for your e-commerce
                 </span>
