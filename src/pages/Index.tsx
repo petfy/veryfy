@@ -2,8 +2,15 @@ import { Hero } from "@/components/Hero";
 import { Navbar } from "@/components/Navbar";
 import { PricingCard } from "@/components/PricingCard";
 import { VerifyTopBar } from "@/components/verification-badges";
-import { VerifyFooter } from "@/components/verification-badges";
+import { VerifyFooter as VerifyBadgeFooter } from "@/components/verification-badges";
 import { generateVerifyUrl } from "@/lib/verification";
+import { BrandCarousel } from "@/components/landing/BrandCarousel";
+import { CustomerStories } from "@/components/landing/CustomerStories";
+import { VerificationProcess } from "@/components/landing/VerificationProcess";
+import { Features } from "@/components/landing/Features";
+import { FAQ } from "@/components/landing/FAQ";
+import { BlacklistSection } from "@/components/landing/BlacklistSection";
+import { Footer } from "@/components/landing/Footer";
 
 const Index = () => {
   const demoRegistrationNumber = "VF-2024-DEMO";
@@ -46,7 +53,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen bg-white">
       <VerifyTopBar 
         registrationNumber={demoRegistrationNumber}
         verifyUrl={demoVerifyUrl}
@@ -54,6 +61,10 @@ const Index = () => {
       />
       <Navbar />
       <Hero />
+      <BrandCarousel />
+      <CustomerStories />
+      <VerificationProcess />
+      <Features />
       
       <section className="py-20 px-4">
         <div className="container mx-auto">
@@ -66,7 +77,11 @@ const Index = () => {
         </div>
       </section>
 
-      <VerifyFooter
+      <BlacklistSection />
+      <FAQ />
+      <Footer />
+      
+      <VerifyBadgeFooter
         registrationNumber={demoRegistrationNumber}
         verifyUrl={demoVerifyUrl}
         isPreview={true}
