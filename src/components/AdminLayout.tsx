@@ -3,6 +3,7 @@ import { useNavigate, Link, Outlet } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, ShieldCheck, AlertOctagon, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { LanguageSelector } from "./LanguageSelector";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
@@ -55,8 +56,9 @@ export default function AdminLayout() {
       <div className="flex h-screen">
         {/* Sidebar */}
         <div className="w-64 bg-primary text-white">
-          <div className="p-4">
+          <div className="p-4 flex justify-between items-center">
             <h1 className="text-xl font-bold">Verify.link Admin</h1>
+            <LanguageSelector />
           </div>
           <nav className="mt-8">
             <Link
