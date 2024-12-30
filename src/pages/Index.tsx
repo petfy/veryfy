@@ -77,9 +77,9 @@ const Index = () => {
       
       {showOverlay && (
         <div className="fixed inset-0 pt-[40px] bg-black/50 z-[40] flex items-start justify-center animate-fade-in">
-          <div className="relative w-full">
-            <div className="absolute left-1/2 transform -translate-x-1/2 bg-white px-4 md:px-6 py-2 md:py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce mt-8 md:mt-12">
-              <span className={`text-sm md:text-lg font-semibold text-primary whitespace-nowrap`}>
+          <div className="relative w-full px-4">
+            <div className="absolute left-1/2 transform -translate-x-1/2 bg-white px-3 md:px-6 py-2 md:py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce mt-8 md:mt-12 max-w-[90vw] md:max-w-none">
+              <span className="text-xs md:text-lg font-semibold text-primary whitespace-nowrap">
                 Get your official Veryfy Trust Badge
               </span>
               <ArrowUpRight className="w-4 h-4 md:w-6 md:h-6 text-primary flex-shrink-0" />
