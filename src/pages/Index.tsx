@@ -67,27 +67,27 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white relative">
+      <div className="relative z-50">
+        <VerifyTopBar 
+          registrationNumber={demoRegistrationNumber}
+          verifyUrl={demoVerifyUrl}
+          isPreview={true}
+        />
+      </div>
+      
       {showOverlay && (
-        <div className="fixed inset-0 bg-black/50 z-[70] flex items-start justify-center animate-fade-in">
+        <div className="fixed inset-0 pt-[40px] bg-black/50 z-[40] flex items-start justify-center animate-fade-in">
           <div className="relative w-full">
-            {/* Highlight box around TopBar */}
-            <div className="absolute top-0 left-0 right-0 border-2 border-primary animate-pulse">
-              <div className="absolute top-full mt-8 md:mt-12 left-1/2 transform -translate-x-1/2 bg-white px-4 md:px-6 py-2 md:py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce">
-                <span className={`text-sm md:text-lg font-semibold text-primary ${isMobile ? 'whitespace-nowrap' : ''}`}>
-                  Get your official Veryfy Trust Badge
-                </span>
-                <ArrowUpRight className="w-4 h-4 md:w-6 md:h-6 text-primary flex-shrink-0" />
-              </div>
+            <div className="absolute left-1/2 transform -translate-x-1/2 bg-white px-4 md:px-6 py-2 md:py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce mt-8 md:mt-12">
+              <span className={`text-sm md:text-lg font-semibold text-primary whitespace-nowrap`}>
+                Get your official Veryfy Trust Badge
+              </span>
+              <ArrowUpRight className="w-4 h-4 md:w-6 md:h-6 text-primary flex-shrink-0" />
             </div>
           </div>
         </div>
       )}
       
-      <VerifyTopBar 
-        registrationNumber={demoRegistrationNumber}
-        verifyUrl={demoVerifyUrl}
-        isPreview={true}
-      />
       <Navbar />
       <Hero />
       <BrandCarousel />
