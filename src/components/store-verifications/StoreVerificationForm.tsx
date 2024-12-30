@@ -3,30 +3,12 @@ import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Form } from "@/components/ui/form";
 import { useQueryClient } from "@tanstack/react-query";
-import { ImagePlus, Upload } from "lucide-react";
-
-interface VerificationFormData {
-  storeName: string;
-  storeUrl: string;
-  businessName: string;
-  businessType: string;
-  contactEmail: string;
-  description: string;
-  logo?: File;
-  legalDocuments?: FileList;
-  constitutionDocuments?: FileList;
-}
+import { LogoUpload } from "./form/LogoUpload";
+import { DocumentUpload } from "./form/DocumentUpload";
+import { BasicInfoFields } from "./form/BasicInfoFields";
+import type { VerificationFormData } from "./types";
 
 export function StoreVerificationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -168,172 +150,24 @@ export function StoreVerificationForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="space-y-4">
-          <FormLabel>Store Logo</FormLabel>
-          <div className="flex items-center gap-4">
-            <div className="relative h-24 w-24 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden">
-              {logoPreview ? (
-                <img src={logoPreview} alt="Logo preview" className="h-full w-full object-cover" />
-              ) : (
-                <ImagePlus className="h-8 w-8 text-gray-400" />
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleLogoChange}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
-            </div>
-            <div className="text-sm text-muted-foreground">
-              <p>Upload your store logo</p>
-              <p>Recommended size: 512x512px</p>
-            </div>
-          </div>
-        </div>
-
-        <FormField
-          control={form.control}
-          name="storeName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Store Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Your store name" {...field} required />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+        <LogoUpload 
+          form={form}
+          logoPreview={logoPreview}
+          onLogoChange={handleLogoChange}
         />
+        
+        <BasicInfoFields form={form} />
 
-        <FormField
-          control={form.control}
-          name="storeUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Store URL</FormLabel>
-              <FormControl>
-                <Input
-                  type="url"
-                  placeholder="https://your-store.com"
-                  {...field}
-                  required
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="businessName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Business Legal Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Legal business name" {...field} required />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="businessType"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Business Type</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="e.g., LLC, Corporation, Sole Proprietorship"
-                  {...field}
-                  required
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="contactEmail"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contact Email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="contact@business.com" {...field} required />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Business Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Tell us about your business..."
-                  {...field}
-                  required
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
+        <DocumentUpload
+          form={form}
           name="legalDocuments"
-          render={({ field: { onChange, ...field } }) => (
-            <FormItem>
-              <FormLabel>Legal Representative Documents</FormLabel>
-              <FormControl>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    multiple
-                    onChange={(e) => onChange(e.target.files)}
-                    {...field}
-                    required
-                  />
-                  <Upload className="h-4 w-4 text-gray-400" />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          label="Legal Representative Documents"
         />
 
-        <FormField
-          control={form.control}
+        <DocumentUpload
+          form={form}
           name="constitutionDocuments"
-          render={({ field: { onChange, ...field } }) => (
-            <FormItem>
-              <FormLabel>Company Constitution Documents</FormLabel>
-              <FormControl>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    multiple
-                    onChange={(e) => onChange(e.target.files)}
-                    {...field}
-                    required
-                  />
-                  <Upload className="h-4 w-4 text-gray-400" />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          label="Company Constitution Documents"
         />
 
         <Button type="submit" disabled={isSubmitting}>
