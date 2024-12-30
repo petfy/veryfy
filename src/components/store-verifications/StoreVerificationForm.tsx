@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useQueryClient } from "@tanstack/react-query";
-import { ImagePlus } from "lucide-react";
+import { ImagePlus, Upload } from "lucide-react";
 
 interface VerificationFormData {
   storeName: string;
@@ -24,6 +24,8 @@ interface VerificationFormData {
   contactEmail: string;
   description: string;
   logo?: File;
+  legalDocuments?: FileList;
+  constitutionDocuments?: FileList;
 }
 
 export function StoreVerificationForm() {
@@ -45,6 +47,23 @@ export function StoreVerificationForm() {
     }
   };
 
+  const uploadFile = async (file: File, path: string) => {
+    const fileExt = file.name.split('.').pop();
+    const filePath = `${path}/${crypto.randomUUID()}.${fileExt}`;
+    
+    const { error: uploadError } = await supabase.storage
+      .from('store-logos')
+      .upload(filePath, file);
+
+    if (uploadError) throw uploadError;
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('store-logos')
+      .getPublicUrl(filePath);
+
+    return publicUrl;
+  };
+
   const onSubmit = async (data: VerificationFormData) => {
     setIsSubmitting(true);
     try {
@@ -58,20 +77,25 @@ export function StoreVerificationForm() {
 
       let logoUrl = null;
       if (data.logo) {
-        const fileExt = data.logo.name.split('.').pop();
-        const filePath = `${crypto.randomUUID()}.${fileExt}`;
-        
-        const { error: uploadError } = await supabase.storage
-          .from('store-logos')
-          .upload(filePath, data.logo);
+        logoUrl = await uploadFile(data.logo, 'logos');
+      }
 
-        if (uploadError) throw uploadError;
+      // Upload legal documents
+      const legalUrls = [];
+      if (data.legalDocuments) {
+        for (let i = 0; i < data.legalDocuments.length; i++) {
+          const url = await uploadFile(data.legalDocuments[i], 'legal');
+          legalUrls.push(url);
+        }
+      }
 
-        const { data: { publicUrl } } = supabase.storage
-          .from('store-logos')
-          .getPublicUrl(filePath);
-
-        logoUrl = publicUrl;
+      // Upload constitution documents
+      const constitutionUrls = [];
+      if (data.constitutionDocuments) {
+        for (let i = 0; i < data.constitutionDocuments.length; i++) {
+          const url = await uploadFile(data.constitutionDocuments[i], 'constitution');
+          constitutionUrls.push(url);
+        }
       }
 
       // Create store entry
@@ -88,6 +112,25 @@ export function StoreVerificationForm() {
         .single();
 
       if (storeError) throw storeError;
+
+      // Upload verification documents
+      for (const url of [...legalUrls, ...constitutionUrls]) {
+        const { error: docError } = await supabase
+          .from("verification_documents")
+          .insert({
+            store_id: store.id,
+            document_type: url.includes('/legal/') ? 'legal' : 'constitution',
+            document_url: url,
+            status: 'pending'
+          });
+
+        if (docError) throw docError;
+      }
+
+      // Send notification email
+      await supabase.functions.invoke('notify-verification', {
+        body: { storeName: data.storeName, contactEmail: data.contactEmail }
+      });
 
       // Update user profile with business information
       const { error: profileError } = await supabase
@@ -108,8 +151,8 @@ export function StoreVerificationForm() {
         description: "We'll review your request and get back to you soon.",
       });
 
-      form.reset();
-      setLogoPreview(null);
+      // Refresh the page to show updated pending count
+      window.location.reload();
     } catch (error) {
       console.error("Verification request error:", error);
       toast({
@@ -155,7 +198,7 @@ export function StoreVerificationForm() {
             <FormItem>
               <FormLabel>Store Name</FormLabel>
               <FormControl>
-                <Input placeholder="Your store name" {...field} />
+                <Input placeholder="Your store name" {...field} required />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -173,6 +216,7 @@ export function StoreVerificationForm() {
                   type="url"
                   placeholder="https://your-store.com"
                   {...field}
+                  required
                 />
               </FormControl>
               <FormMessage />
@@ -187,7 +231,7 @@ export function StoreVerificationForm() {
             <FormItem>
               <FormLabel>Business Legal Name</FormLabel>
               <FormControl>
-                <Input placeholder="Legal business name" {...field} />
+                <Input placeholder="Legal business name" {...field} required />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -204,6 +248,7 @@ export function StoreVerificationForm() {
                 <Input
                   placeholder="e.g., LLC, Corporation, Sole Proprietorship"
                   {...field}
+                  required
                 />
               </FormControl>
               <FormMessage />
@@ -218,7 +263,7 @@ export function StoreVerificationForm() {
             <FormItem>
               <FormLabel>Contact Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="contact@business.com" {...field} />
+                <Input type="email" placeholder="contact@business.com" {...field} required />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -235,7 +280,56 @@ export function StoreVerificationForm() {
                 <Textarea
                   placeholder="Tell us about your business..."
                   {...field}
+                  required
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="legalDocuments"
+          render={({ field: { onChange, ...field } }) => (
+            <FormItem>
+              <FormLabel>Legal Representative Documents</FormLabel>
+              <FormControl>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    multiple
+                    onChange={(e) => onChange(e.target.files)}
+                    {...field}
+                    required
+                  />
+                  <Upload className="h-4 w-4 text-gray-400" />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="constitutionDocuments"
+          render={({ field: { onChange, ...field } }) => (
+            <FormItem>
+              <FormLabel>Company Constitution Documents</FormLabel>
+              <FormControl>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    multiple
+                    onChange={(e) => onChange(e.target.files)}
+                    {...field}
+                    required
+                  />
+                  <Upload className="h-4 w-4 text-gray-400" />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
