@@ -41,7 +41,7 @@ export function VerifyFooter({ registrationNumber, verifyUrl, isPreview = false 
           url: "https://demo-store.com",
           verification_status: "verified",
           created_at: "2024-01-01T00:00:00.000Z",
-          updated_at: "2024-01-01T00:00:00.000Z",
+          updated_at: "2024-01-01T00:00:00.000Z", // Added updated_at property
           logo_url: null
         });
         return;
