@@ -13,16 +13,18 @@ import { BlacklistSection } from "@/components/landing/BlacklistSection";
 import { Footer } from "@/components/landing/Footer";
 import { ArrowUpRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(true);
   const demoRegistrationNumber = "VF-2024-DEMO";
   const demoVerifyUrl = generateVerifyUrl(demoRegistrationNumber);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowOverlay(false);
-    }, 5000); // Hide after 5 seconds
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -70,11 +72,11 @@ const Index = () => {
           <div className="relative w-full">
             {/* Highlight box around TopBar */}
             <div className="absolute top-0 left-0 right-0 border-2 border-primary animate-pulse">
-              <div className="absolute top-full mt-4 left-1/2 transform -translate-x-1/2 bg-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce">
-                <span className="text-lg font-semibold text-primary">
-                  Get your official Veryfy Trust Badge for your e-commerce
+              <div className="absolute top-full mt-8 md:mt-12 left-1/2 transform -translate-x-1/2 bg-white px-4 md:px-6 py-2 md:py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce">
+                <span className={`text-sm md:text-lg font-semibold text-primary ${isMobile ? 'whitespace-nowrap' : ''}`}>
+                  Get your official Veryfy Trust Badge
                 </span>
-                <ArrowUpRight className="w-6 h-6 text-primary" />
+                <ArrowUpRight className="w-4 h-4 md:w-6 md:h-6 text-primary flex-shrink-0" />
               </div>
             </div>
           </div>
