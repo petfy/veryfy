@@ -1,8 +1,7 @@
-import { Hero } from "@/components/Hero";
+import { Toaster } from "@/components/ui/toaster";
 import { Navbar } from "@/components/Navbar";
-import { PricingCard } from "@/components/PricingCard";
-import { VerifyTopBar } from "@/components/verification-badges";
-import { VerifyFooter as VerifyBadgeFooter } from "@/components/verification-badges";
+import { Hero } from "@/components/Hero";
+import { VerifyTopBar, VerifyFooter } from "@/components/verification-badges";
 import { generateVerifyUrl } from "@/lib/verification";
 import { BrandCarousel } from "@/components/landing/BrandCarousel";
 import { CustomerStories } from "@/components/landing/CustomerStories";
@@ -13,13 +12,11 @@ import { BlacklistSection } from "@/components/landing/BlacklistSection";
 import { Footer } from "@/components/landing/Footer";
 import { ArrowUpRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(true);
   const demoRegistrationNumber = "VF-2024-DEMO";
   const demoVerifyUrl = generateVerifyUrl(demoRegistrationNumber);
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,42 +25,6 @@ const Index = () => {
 
     return () => clearTimeout(timer);
   }, []);
-
-  const plans = [
-    {
-      title: "Basic",
-      price: "29",
-      features: [
-        "Store Verification Badge",
-        "Basic WHOIS Lookup",
-        "Email Support",
-        "Basic Analytics",
-      ],
-    },
-    {
-      title: "Professional",
-      price: "79",
-      features: [
-        "Everything in Basic",
-        "Priority Verification",
-        "Advanced WHOIS Tools",
-        "Priority Support",
-        "Detailed Analytics",
-      ],
-      recommended: true,
-    },
-    {
-      title: "Enterprise",
-      price: "199",
-      features: [
-        "Everything in Professional",
-        "Custom Badge Design",
-        "API Access",
-        "Dedicated Support",
-        "Advanced Reporting",
-      ],
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-white relative">
@@ -77,8 +38,8 @@ const Index = () => {
       
       {showOverlay && (
         <div className="fixed inset-0 pt-[40px] bg-black/50 z-[40] flex items-start justify-center animate-fade-in">
-          <div className="relative w-full px-4">
-            <div className="absolute left-1/2 transform -translate-x-1/2 bg-white px-3 md:px-6 py-2 md:py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce mt-8 md:mt-12 max-w-[90vw] md:max-w-none">
+          <div className="relative w-full px-4 flex justify-center">
+            <div className="bg-white px-3 md:px-6 py-2 md:py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce mt-8 md:mt-12">
               <span className="text-xs md:text-lg font-semibold text-primary whitespace-nowrap">
                 Get your official Veryfy Trust Badge
               </span>
@@ -110,7 +71,7 @@ const Index = () => {
       <FAQ />
       <Footer />
       
-      <VerifyBadgeFooter
+      <VerifyFooter
         registrationNumber={demoRegistrationNumber}
         verifyUrl={demoVerifyUrl}
         isPreview={true}
