@@ -55,18 +55,6 @@ const Index = () => {
       <CustomerStories />
       <VerificationProcess />
       <Features />
-      
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Choose Your Plan</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {plans.map((plan) => (
-              <PricingCard key={plan.title} {...plan} />
-            ))}
-          </div>
-        </div>
-      </section>
-
       <BlacklistSection />
       <FAQ />
       <Footer />
