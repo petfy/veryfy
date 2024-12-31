@@ -117,18 +117,12 @@
       font-size: 1.5rem;
       font-weight: 600;
       color: #6b7280;
-      overflow: hidden;
     }
     .veryfy-store-details h3 {
       font-size: 1.25rem;
       font-weight: 600;
       color: #111827;
       margin: 0 0 0.5rem 0;
-    }
-    .veryfy-store-details p {
-      color: #6b7280;
-      font-size: 0.875rem;
-      margin: 0.25rem 0;
     }
     .veryfy-store-details a {
       color: #6b7280;
@@ -154,18 +148,6 @@
     }
   `;
   document.head.appendChild(style);
-
-  // Function to fetch store data
-  async function fetchStoreData() {
-    try {
-      const response = await fetch(`${verifyUrl}/api/store-data?registration=${registrationNumber}`);
-      if (!response.ok) throw new Error('Failed to fetch store data');
-      return await response.json();
-    } catch (error) {
-      console.error('Error fetching store data:', error);
-      return null;
-    }
-  }
 
   // Create topbar content
   const container = document.getElementById('verify-link-topbar');
@@ -193,62 +175,30 @@
       </div>
       <div id="veryfy-store-info" class="veryfy-store-info">
         <div class="veryfy-store-content">
-          <div id="store-data-container">Loading...</div>
+          <div class="veryfy-store-header">
+            <div class="veryfy-store-logo">
+              V
+            </div>
+            <div class="veryfy-store-details">
+              <h3>Verified Store</h3>
+              <a href="${verifyUrl}" target="_blank">View Verification Details</a>
+              <div class="veryfy-store-badge">
+                <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Verified by Veryfy
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     `;
 
     // Add toggle function to window scope
-    window.toggleStoreInfo = async function() {
+    window.toggleStoreInfo = function() {
       const storeInfo = document.getElementById('veryfy-store-info');
-      const storeDataContainer = document.getElementById('store-data-container');
-      
       if (storeInfo) {
-        const isActive = storeInfo.classList.toggle('active');
-        
-        if (isActive && storeDataContainer) {
-          const storeData = await fetchStoreData();
-          if (storeData) {
-            storeDataContainer.innerHTML = `
-              <div class="veryfy-store-header">
-                <div class="veryfy-store-logo">
-                  ${storeData.logo_url ? 
-                    `<img src="${storeData.logo_url}" alt="${storeData.name}" style="width: 100%; height: 100%; object-fit: cover;">` :
-                    storeData.name[0]
-                  }
-                </div>
-                <div class="veryfy-store-details">
-                  <h3>${storeData.name}</h3>
-                  <p>${storeData.url}</p>
-                  <p>Verification Status: ${storeData.verification_status}</p>
-                  <a href="${verifyUrl}" target="_blank">View Verification Details</a>
-                  <div class="veryfy-store-badge">
-                    <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Verified by Veryfy
-                  </div>
-                </div>
-              </div>
-            `;
-          } else {
-            storeDataContainer.innerHTML = `
-              <div class="veryfy-store-header">
-                <div class="veryfy-store-logo">V</div>
-                <div class="veryfy-store-details">
-                  <h3>Verified Store</h3>
-                  <a href="${verifyUrl}" target="_blank">View Verification Details</a>
-                  <div class="veryfy-store-badge">
-                    <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Verified by Veryfy
-                  </div>
-                </div>
-              </div>
-            `;
-          }
-        }
+        storeInfo.classList.toggle('active');
       }
     };
   }
