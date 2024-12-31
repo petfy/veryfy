@@ -12,6 +12,7 @@ import { BlacklistSection } from "@/components/landing/BlacklistSection";
 import { Footer } from "@/components/landing/Footer";
 import { ArrowUpRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(true);
@@ -19,6 +20,23 @@ const Index = () => {
   const demoVerifyUrl = generateVerifyUrl(demoRegistrationNumber);
 
   useEffect(() => {
+    // Initialize Supabase auth state
+    const initializeAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        // If no session exists, clear any stale auth data
+        if (!session) {
+          await supabase.auth.signOut();
+        }
+      } catch (error) {
+        console.error("Auth initialization error:", error);
+        // If there's an error, ensure we clear any invalid auth state
+        await supabase.auth.signOut();
+      }
+    };
+
+    initializeAuth();
+
     const timer = setTimeout(() => {
       setShowOverlay(false);
     }, 5000);
