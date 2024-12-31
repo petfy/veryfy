@@ -36,6 +36,33 @@ export type Database = {
         }
         Relationships: []
       }
+      removal_requests: {
+        Row: {
+          created_at: string
+          evidence_url: string | null
+          id: string
+          reason: string
+          scam_report_id: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          evidence_url?: string | null
+          id?: string
+          reason: string
+          scam_report_id: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          evidence_url?: string | null
+          id?: string
+          reason?: string
+          scam_report_id?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
       scam_reports: {
         Row: {
           created_at: string
