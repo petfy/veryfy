@@ -158,18 +158,9 @@
   // Function to fetch store data
   async function fetchStoreData() {
     try {
-      // Log the URL being fetched for debugging
-      console.log('Fetching store data from:', `${verifyUrl}/api/store-data?registration=${registrationNumber}`);
-      
-      const response = await fetch(`${verifyUrl}/api/verification-badges/${registrationNumber}`);
-      if (!response.ok) {
-        console.error('Failed to fetch store data:', response.status, response.statusText);
-        throw new Error('Failed to fetch store data');
-      }
-      
-      const data = await response.json();
-      console.log('Received store data:', data);
-      return data;
+      const response = await fetch(`${verifyUrl}/api/store-data?registration=${registrationNumber}`);
+      if (!response.ok) throw new Error('Failed to fetch store data');
+      return await response.json();
     } catch (error) {
       console.error('Error fetching store data:', error);
       return null;
@@ -216,24 +207,21 @@
         const isActive = storeInfo.classList.toggle('active');
         
         if (isActive && storeDataContainer) {
-          storeDataContainer.innerHTML = 'Loading...';
           const storeData = await fetchStoreData();
-          
-          if (storeData && storeData.store) {
-            const store = storeData.store;
+          if (storeData) {
             storeDataContainer.innerHTML = `
               <div class="veryfy-store-header">
                 <div class="veryfy-store-logo">
-                  ${store.logo_url ? 
-                    `<img src="${store.logo_url}" alt="${store.name}" style="width: 100%; height: 100%; object-fit: cover;">` :
-                    store.name[0]
+                  ${storeData.logo_url ? 
+                    `<img src="${storeData.logo_url}" alt="${storeData.name}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                    storeData.name[0]
                   }
                 </div>
                 <div class="veryfy-store-details">
-                  <h3>${store.name}</h3>
-                  <p>${store.url}</p>
-                  <p>Verification Status: ${store.verification_status}</p>
-                  <a href="${verifyUrl}/verification/${registrationNumber}" target="_blank">View Verification Details</a>
+                  <h3>${storeData.name}</h3>
+                  <p>${storeData.url}</p>
+                  <p>Verification Status: ${storeData.verification_status}</p>
+                  <a href="${verifyUrl}" target="_blank">View Verification Details</a>
                   <div class="veryfy-store-badge">
                     <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
                       <polyline points="20 6 9 17 4 12"></polyline>
@@ -249,7 +237,7 @@
                 <div class="veryfy-store-logo">V</div>
                 <div class="veryfy-store-details">
                   <h3>Verified Store</h3>
-                  <a href="${verifyUrl}/verification/${registrationNumber}" target="_blank">View Verification Details</a>
+                  <a href="${verifyUrl}" target="_blank">View Verification Details</a>
                   <div class="veryfy-store-badge">
                     <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
                       <polyline points="20 6 9 17 4 12"></polyline>
