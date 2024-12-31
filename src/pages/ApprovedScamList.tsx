@@ -1,17 +1,30 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { ScamReportTable, type ScamReport } from "@/components/scam-reports/ScamReportTable";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import { ScamReportForm } from "@/components/scam-reports/ScamReportForm";
 import { RemovalRequestForm } from "@/components/scam-reports/RemovalRequestForm";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Flag, Shield, ArrowUpDown } from "lucide-react";
+import type { ScamReport } from "@/components/scam-reports/types";
 
 type SortField = "customer_name" | "report_count" | "created_at";
 
 export default function ApprovedScamList() {
-  const { toast } = useToast();
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
@@ -27,15 +40,7 @@ export default function ApprovedScamList() {
         .eq("status", "approved")
         .order(sortField, { ascending: sortDirection === "asc" });
 
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to fetch approved scam reports",
-        });
-        return [];
-      }
-
+      if (error) throw error;
       return data as ScamReport[];
     },
   });

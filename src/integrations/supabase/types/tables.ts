@@ -1,78 +1,40 @@
+import { Database } from "./database";
+
 export interface ProfilesTable {
-  Row: {
-    business_name: string | null;
-    business_type: string | null;
-    created_at: string;
-    full_name: string | null;
-    id: string;
-    updated_at: string;
-  };
-  Insert: {
-    business_name?: string | null;
-    business_type?: string | null;
-    created_at?: string;
-    full_name?: string | null;
-    id: string;
-    updated_at?: string;
-  };
-  Update: {
-    business_name?: string | null;
-    business_type?: string | null;
-    created_at?: string;
-    full_name?: string | null;
-    id?: string;
-    updated_at?: string;
-  };
-  Relationships: [];
+  Row: Database["public"]["Tables"]["profiles"]["Row"];
+  Insert: Database["public"]["Tables"]["profiles"]["Insert"];
+  Update: Database["public"]["Tables"]["profiles"]["Update"];
+  Relationships: Database["public"]["Tables"]["profiles"]["Relationships"];
 }
 
 export interface ScamReportsTable {
-  Row: {
-    id: string;
-    reporter_id: string;
-    reported_email: string;
-    description: string;
-    evidence_url: string | null;
-    status: string;
-    created_at: string;
-    customer_first_name: string | null;
-    customer_last_name: string | null;
-    customer_phone: string | null;
-    customer_address: string | null;
-    customer_city: string | null;
-    customer_country: string | null;
+  Row: Database["public"]["Tables"]["scam_reports"]["Row"] & {
+    report_count: number;
   };
-  Insert: {
-    id?: string;
-    reporter_id: string;
-    reported_email: string;
-    description: string;
-    evidence_url?: string | null;
-    status?: string;
-    created_at?: string;
-    customer_first_name?: string | null;
-    customer_last_name?: string | null;
-    customer_phone?: string | null;
-    customer_address?: string | null;
-    customer_city?: string | null;
-    customer_country?: string | null;
-  };
-  Update: {
-    id?: string;
-    reporter_id?: string;
-    reported_email?: string;
-    description?: string;
-    evidence_url?: string | null;
-    status?: string;
-    created_at?: string;
-    customer_first_name?: string | null;
-    customer_last_name?: string | null;
-    customer_phone?: string | null;
-    customer_address?: string | null;
-    customer_city?: string | null;
-    customer_country?: string | null;
-  };
-  Relationships: [];
+  Insert: Database["public"]["Tables"]["scam_reports"]["Insert"];
+  Update: Database["public"]["Tables"]["scam_reports"]["Update"];
+  Relationships: Database["public"]["Tables"]["scam_reports"]["Relationships"];
+}
+
+export interface StoresTable {
+  Row: Database["public"]["Tables"]["stores"]["Row"];
+  Insert: Database["public"]["Tables"]["stores"]["Insert"];
+  Update: Database["public"]["Tables"]["stores"]["Update"];
+  Relationships: Database["public"]["Tables"]["stores"]["Relationships"];
+}
+
+export interface VerificationBadgesTable {
+  Row: Database["public"]["Tables"]["verification_badges"]["Row"];
+  Insert: Database["public"]["Tables"]["verification_badges"]["Insert"];
+  Update: Database["public"]["Tables"]["verification_badges"]["Update"];
+  Relationships: Database["public"]["Tables"]["verification_badges"]["Relationships"];
+}
+
+export interface VerificationDocumentsTable {
+  Row: Database["public"]["Tables"]["verification_documents"]["Row"];
+  Insert: Database["public"]["Tables"]["verification_documents"]["Insert"];
+  Update: Database["public"]["Tables"]["verification_documents"]["Update"];
+  Relationships: Database["public"]["Tables"]["verification_documents"]["Relationships"];
 }
 
 export interface RemovalRequestsTable {
@@ -99,111 +61,6 @@ export interface RemovalRequestsTable {
     evidence_url?: string | null;
     status?: string;
     created_at?: string;
-  };
-  Relationships: [];
-}
-
-export interface StoresTable {
-  Row: {
-    created_at: string;
-    id: string;
-    logo_url: string | null;
-    name: string;
-    subscription_expires_at: string | null;
-    subscription_status: string | null;
-    updated_at: string;
-    url: string;
-    user_id: string;
-    verification_status: string | null;
-  };
-  Insert: {
-    created_at?: string;
-    id?: string;
-    logo_url?: string | null;
-    name: string;
-    subscription_expires_at?: string | null;
-    subscription_status?: string | null;
-    updated_at?: string;
-    url: string;
-    user_id: string;
-    verification_status?: string | null;
-  };
-  Update: {
-    created_at?: string;
-    id?: string;
-    logo_url?: string | null;
-    name?: string;
-    subscription_expires_at?: string | null;
-    subscription_status?: string | null;
-    updated_at?: string;
-    url?: string;
-    user_id?: string;
-    verification_status?: string | null;
-  };
-  Relationships: [];
-}
-
-export interface VerificationBadgesTable {
-  Row: {
-    allowed_domain: string;
-    badge_type: string;
-    created_at: string;
-    expires_at: string | null;
-    id: string;
-    is_active: boolean | null;
-    registration_number: string;
-    store_id: string;
-    updated_at: string;
-  };
-  Insert: {
-    allowed_domain?: string;
-    badge_type: string;
-    created_at?: string;
-    expires_at?: string | null;
-    id?: string;
-    is_active?: boolean | null;
-    registration_number: string;
-    store_id: string;
-    updated_at?: string;
-  };
-  Update: {
-    allowed_domain?: string;
-    badge_type?: string;
-    created_at?: string;
-    expires_at?: string | null;
-    id?: string;
-    is_active?: boolean | null;
-    registration_number?: string;
-    store_id?: string;
-    updated_at?: string;
-  };
-  Relationships: [];
-}
-
-export interface VerificationDocumentsTable {
-  Row: {
-    created_at: string;
-    document_type: string;
-    document_url: string;
-    id: string;
-    status: string | null;
-    store_id: string;
-  };
-  Insert: {
-    created_at?: string;
-    document_type: string;
-    document_url: string;
-    id?: string;
-    status?: string | null;
-    store_id: string;
-  };
-  Update: {
-    created_at?: string;
-    document_type?: string;
-    document_url?: string;
-    id?: string;
-    status?: string | null;
-    store_id?: string;
   };
   Relationships: [];
 }
