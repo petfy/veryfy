@@ -66,6 +66,9 @@
       cursor: pointer;
       font-size: 0.875rem;
       margin-left: 0.5rem;
+      background: none;
+      border: none;
+      padding: 0;
     }
     .veryfy-topbar-store svg {
       width: 16px;
@@ -98,10 +101,11 @@
           <a href="https://veryfy.link" target="_blank" rel="noopener noreferrer" class="veryfy-topbar-link">
             Veryfy
           </a>
-          <button class="veryfy-topbar-store" onclick="window.open('${verifyUrl}', 'verifyStore', 'width=600,height=600,location=no,menubar=no,scrollbars=yes,status=no,toolbar=no'); return false;">
+          <button class="veryfy-topbar-store" onclick="window.location.href='${verifyUrl}'">
             <svg viewBox="0 0 24 24">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              <path d="M21 12V7H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5m-4 2h4m-4-4h4"></path>
+              <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+              <path d="M19 3h-2"></path>
             </svg>
             Check Store
           </button>
