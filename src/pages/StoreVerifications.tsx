@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { StoreVerificationsTable } from "@/components/store-verifications/StoreVerificationsTable";
 import { StoreVerificationDialog } from "@/components/store-verifications/StoreVerificationDialog";
 import { StoreVerificationForm } from "@/components/store-verifications/StoreVerificationForm";
+import { useTranslation } from "@/contexts/TranslationContext";
 import type { Store, Document } from "@/components/store-verifications/types";
 
 export default function StoreVerifications() {
@@ -14,6 +15,7 @@ export default function StoreVerifications() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const fetchStores = async () => {
     const { data, error } = await supabase
@@ -91,24 +93,24 @@ export default function StoreVerifications() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Store Verifications</h1>
+        <h1 className="text-2xl font-bold">{t("storeVerifications")}</h1>
         <Badge variant="secondary" className="text-sm">
           <ShieldCheck className="w-4 h-4 mr-1" />
           {stores.filter((s) => s.verification_status === "pending").length}{" "}
-          Pending
+          {t("pending")}
         </Badge>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h2 className="text-lg font-semibold mb-4">Submit Verification Request</h2>
+          <h2 className="text-lg font-semibold mb-4">{t("submitVerificationRequest")}</h2>
           <div className="bg-white p-6 rounded-lg border">
             <StoreVerificationForm />
           </div>
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold mb-4">Verification Requests</h2>
+          <h2 className="text-lg font-semibold mb-4">{t("verificationRequests")}</h2>
           <StoreVerificationsTable
             stores={stores}
             onViewDetails={handleViewDetails}

@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
 import { Store } from "./types";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 interface StoreVerificationsTableProps {
   stores: Store[];
@@ -20,6 +21,8 @@ export function StoreVerificationsTable({
   stores,
   onViewDetails,
 }: StoreVerificationsTableProps) {
+  const { t } = useTranslation();
+
   const getStatusBadge = (status: string) => {
     const variants: Record<string, "default" | "secondary" | "destructive"> = {
       pending: "default",
@@ -27,7 +30,7 @@ export function StoreVerificationsTable({
       rejected: "destructive",
     };
 
-    return <Badge variant={variants[status]}>{status}</Badge>;
+    return <Badge variant={variants[status]}>{t(status)}</Badge>;
   };
 
   return (
@@ -35,11 +38,10 @@ export function StoreVerificationsTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Store Name</TableHead>
-            <TableHead>URL</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Submitted</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead>{t("storeName")}</TableHead>
+            <TableHead>{t("storeUrl")}</TableHead>
+            <TableHead>{t("status")}</TableHead>
+            <TableHead>{t("actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -58,16 +60,13 @@ export function StoreVerificationsTable({
               </TableCell>
               <TableCell>{getStatusBadge(store.verification_status)}</TableCell>
               <TableCell>
-                {new Date(store.created_at).toLocaleDateString()}
-              </TableCell>
-              <TableCell className="text-right">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => onViewDetails(store)}
                 >
                   <Eye className="w-4 h-4 mr-1" />
-                  View
+                  {t("view")}
                 </Button>
               </TableCell>
             </TableRow>
