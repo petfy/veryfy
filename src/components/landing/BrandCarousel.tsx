@@ -6,6 +6,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card } from "@/components/ui/card";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 const brands = [
   { name: "Amazon", logo: "/placeholder.svg" },
@@ -17,11 +18,13 @@ const brands = [
 ];
 
 export const BrandCarousel = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-semibold text-center mb-12 text-gray-600">
-          Trusted by Leading E-commerce Platforms
+          {t("trustedBy")}
         </h2>
         <Carousel
           opts={{

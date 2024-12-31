@@ -1,7 +1,10 @@
 import { Shield } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 export const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-gray-900 text-white py-12 md:py-20">
       <div className="container mx-auto px-4">
@@ -12,38 +15,38 @@ export const Footer = () => {
               Veryfy
             </Link>
             <p className="text-sm md:text-base text-gray-400">
-              Building trust in e-commerce through verified store badges and fraud prevention.
+              {t("footerTagline")}
             </p>
           </div>
           <div>
-            <h3 className="font-semibold text-base md:text-lg mb-3 md:mb-4">Product</h3>
+            <h3 className="font-semibold text-base md:text-lg mb-3 md:mb-4">{t("product")}</h3>
             <ul className="space-y-1.5 md:space-y-2 text-sm md:text-base">
-              <li><Link to="#" className="text-gray-400 hover:text-white">Features</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white">Pricing</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white">Verification</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white">Blacklist</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("features")}</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("pricing")}</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("verification")}</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("blacklist")}</Link></li>
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-base md:text-lg mb-3 md:mb-4">Company</h3>
+            <h3 className="font-semibold text-base md:text-lg mb-3 md:mb-4">{t("company")}</h3>
             <ul className="space-y-1.5 md:space-y-2 text-sm md:text-base">
-              <li><Link to="#" className="text-gray-400 hover:text-white">About</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white">Contact</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white">Blog</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white">Careers</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("about")}</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("contact")}</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("blog")}</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("careers")}</Link></li>
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-base md:text-lg mb-3 md:mb-4">Legal</h3>
+            <h3 className="font-semibold text-base md:text-lg mb-3 md:mb-4">{t("legal")}</h3>
             <ul className="space-y-1.5 md:space-y-2 text-sm md:text-base">
-              <li><Link to="#" className="text-gray-400 hover:text-white">Privacy Policy</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white">Terms of Service</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white">Cookie Policy</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("privacyPolicy")}</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("termsOfService")}</Link></li>
+              <li><Link to="#" className="text-gray-400 hover:text-white">{t("cookiePolicy")}</Link></li>
             </ul>
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 md:mt-12 pt-6 md:pt-8 text-center text-sm md:text-base text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Veryfy. All rights reserved.</p>
+          <p>{t("copyright", { year: new Date().getFullYear() })}</p>
         </div>
       </div>
     </footer>

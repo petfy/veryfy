@@ -4,42 +4,45 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 const faqs = [
   {
-    question: "How does the verification process work?",
-    answer: "Our verification process involves submitting your business documents, which our team reviews to verify your store's legitimacy. Once approved, you'll receive a verification badge to display on your website.",
+    questionKey: "faqQuestion1",
+    answerKey: "faqAnswer1",
   },
   {
-    question: "What documents do I need for verification?",
-    answer: "You'll need to provide business registration documents, government-issued ID, and proof of domain ownership. Additional documents may be required depending on your business type.",
+    questionKey: "faqQuestion2",
+    answerKey: "faqAnswer2",
   },
   {
-    question: "How long does verification take?",
-    answer: "The verification process typically takes 1-3 business days after all required documents are submitted. Priority verification is available for Professional and Enterprise plans.",
+    questionKey: "faqQuestion3",
+    answerKey: "faqAnswer3",
   },
   {
-    question: "What is the customer blacklist feature?",
-    answer: "The customer blacklist is a shared database of reported fraudulent customers. Verified stores can report and check customer information to prevent fraud across the platform.",
+    questionKey: "faqQuestion4",
+    answerKey: "faqAnswer4",
   },
 ];
 
 export const FAQ = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-4">
-          Frequently Asked Questions
+          {t("faq")}
         </h2>
         <p className="text-xl text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-          Find answers to common questions about our verification service
+          {t("faqSubtitle")}
         </p>
         <div className="max-w-3xl mx-auto">
           <Accordion type="single" collapsible>
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger>{faq.question}</AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
+                <AccordionTrigger>{t(faq.questionKey)}</AccordionTrigger>
+                <AccordionContent>{t(faq.answerKey)}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
