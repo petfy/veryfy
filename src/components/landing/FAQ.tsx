@@ -5,23 +5,24 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useTranslation } from "@/contexts/TranslationContext";
+import type { TranslationKey } from "@/contexts/TranslationContext";
 
 const faqs = [
   {
-    questionKey: "faqQuestion1",
-    answerKey: "faqAnswer1",
+    questionKey: "faqQuestion1" as TranslationKey,
+    answerKey: "faqAnswer1" as TranslationKey,
   },
   {
-    questionKey: "faqQuestion2",
-    answerKey: "faqAnswer2",
+    questionKey: "faqQuestion2" as TranslationKey,
+    answerKey: "faqAnswer2" as TranslationKey,
   },
   {
-    questionKey: "faqQuestion3",
-    answerKey: "faqAnswer3",
+    questionKey: "faqQuestion3" as TranslationKey,
+    answerKey: "faqAnswer3" as TranslationKey,
   },
   {
-    questionKey: "faqQuestion4",
-    answerKey: "faqAnswer4",
+    questionKey: "faqQuestion4" as TranslationKey,
+    answerKey: "faqAnswer4" as TranslationKey,
   },
 ];
 

@@ -1,22 +1,23 @@
 import { CheckCircle2 } from "lucide-react";
 import { useTranslation } from "@/contexts/TranslationContext";
+import type { TranslationKey } from "@/contexts/TranslationContext";
 
 const steps = [
   {
-    titleKey: "verificationStep1Title",
-    descriptionKey: "verificationStep1Description",
+    titleKey: "verificationStep1Title" as TranslationKey,
+    descriptionKey: "verificationStep1Description" as TranslationKey,
   },
   {
-    titleKey: "verificationStep2Title",
-    descriptionKey: "verificationStep2Description",
+    titleKey: "verificationStep2Title" as TranslationKey,
+    descriptionKey: "verificationStep2Description" as TranslationKey,
   },
   {
-    titleKey: "verificationStep3Title",
-    descriptionKey: "verificationStep3Description",
+    titleKey: "verificationStep3Title" as TranslationKey,
+    descriptionKey: "verificationStep3Description" as TranslationKey,
   },
   {
-    titleKey: "verificationStep4Title",
-    descriptionKey: "verificationStep4Description",
+    titleKey: "verificationStep4Title" as TranslationKey,
+    descriptionKey: "verificationStep4Description" as TranslationKey,
   },
 ];
 

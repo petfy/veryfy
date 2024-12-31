@@ -1,13 +1,15 @@
 import React, { createContext, useContext, useState } from "react";
 import { translations, SupportedLanguages } from "../translations";
 
-// Create a type from all possible translation keys
+type TranslationParams = string[] | undefined;
+
+// Create a type that includes all possible translation keys
 export type TranslationKey = keyof typeof translations.en;
 
 type TranslationContextType = {
   currentLanguage: SupportedLanguages;
   setCurrentLanguage: (lang: SupportedLanguages) => void;
-  t: (key: TranslationKey, params?: string[]) => string;
+  t: (key: TranslationKey | string, params?: TranslationParams) => string;
 };
 
 const TranslationContext = createContext<TranslationContextType | undefined>(undefined);
@@ -15,16 +17,18 @@ const TranslationContext = createContext<TranslationContextType | undefined>(und
 export function TranslationProvider({ children }: { children: React.ReactNode }) {
   const [currentLanguage, setCurrentLanguage] = useState<SupportedLanguages>("en");
 
-  const t = (key: TranslationKey, params?: string[]): string => {
-    let text = translations[currentLanguage]?.[key] || translations.en[key] || key;
+  const t = (key: TranslationKey | string, params?: TranslationParams): string => {
+    const translation = translations[currentLanguage]?.[key as TranslationKey] || 
+                       translations.en[key as TranslationKey] || 
+                       key;
     
     if (params) {
-      params.forEach((param, index) => {
-        text = text.replace(`{${index}}`, param);
-      });
+      return params.reduce((acc, param, index) => {
+        return acc.replace(`{${index}}`, param);
+      }, translation);
     }
     
-    return text;
+    return translation;
   };
 
   return (

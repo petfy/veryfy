@@ -1,28 +1,29 @@
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslation } from "@/contexts/TranslationContext";
+import type { TranslationKey } from "@/contexts/TranslationContext";
 
 const stories = [
   {
     name: "Sarah Johnson",
-    role: "E-commerce Owner",
+    role: "E-commerce Owner" as TranslationKey,
     company: "Fashion Boutique",
     image: "/placeholder.svg",
-    quoteKey: "customerStory1",
+    quoteKey: "customerStory1" as TranslationKey,
   },
   {
     name: "Michael Chen",
-    role: "CEO",
+    role: "CEO" as TranslationKey,
     company: "Tech Gadgets Store",
     image: "/placeholder.svg",
-    quoteKey: "customerStory2",
+    quoteKey: "customerStory2" as TranslationKey,
   },
   {
     name: "Emma Davis",
-    role: "Operations Manager",
+    role: "Operations Manager" as TranslationKey,
     company: "Home Decor Shop",
     image: "/placeholder.svg",
-    quoteKey: "customerStory3",
+    quoteKey: "customerStory3" as TranslationKey,
   },
 ];
 

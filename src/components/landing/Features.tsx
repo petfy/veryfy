@@ -1,27 +1,28 @@
 import { Shield, Users, AlertTriangle, Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useTranslation } from "@/contexts/TranslationContext";
+import type { TranslationKey } from "@/contexts/TranslationContext";
 
 const features = [
   {
     icon: Shield,
-    titleKey: "featureTitle1",
-    descriptionKey: "featureDescription1",
+    titleKey: "featureTitle1" as TranslationKey,
+    descriptionKey: "featureDescription1" as TranslationKey,
   },
   {
     icon: Users,
-    titleKey: "featureTitle2",
-    descriptionKey: "featureDescription2",
+    titleKey: "featureTitle2" as TranslationKey,
+    descriptionKey: "featureDescription2" as TranslationKey,
   },
   {
     icon: AlertTriangle,
-    titleKey: "featureTitle3",
-    descriptionKey: "featureDescription3",
+    titleKey: "featureTitle3" as TranslationKey,
+    descriptionKey: "featureDescription3" as TranslationKey,
   },
   {
     icon: Search,
-    titleKey: "featureTitle4",
-    descriptionKey: "featureDescription4",
+    titleKey: "featureTitle4" as TranslationKey,
+    descriptionKey: "featureDescription4" as TranslationKey,
   },
 ];
 
