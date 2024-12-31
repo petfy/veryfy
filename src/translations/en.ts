@@ -1,5 +1,5 @@
 export const en = {
-  // Navigation & Dashboard
+  // Navigation & Common UI
   dashboard: "Dashboard",
   pendingVerifications: "Pending Verifications",
   pendingReports: "Pending Reports",
@@ -8,36 +8,50 @@ export const en = {
   scamReports: "Scam Reports",
   signOut: "Sign Out",
   verifyLink: "Veryfy Admin",
+  login: "Login",
+  register: "Register",
   
-  // Store Verifications Page
-  submitVerificationRequest: "Submit Verification Request",
-  verificationRequests: "Verification Requests",
+  // Landing Page
+  heroTitle: "Protect Your E-commerce Business",
+  heroSubtitle: "Get verified and join our network of trusted online stores",
+  getStarted: "Get Started",
+  learnMore: "Learn More",
+  trustedBy: "Trusted by Leading E-commerce Platforms",
+  customerStories: "Customer Stories",
+  howItWorks: "How It Works",
+  features: "Features",
+  faq: "Frequently Asked Questions",
+  
+  // Forms
   storeName: "Store Name",
   storeUrl: "Store URL",
-  businessLegalName: "Business Legal Name",
+  businessName: "Business Name",
   businessType: "Business Type",
   contactEmail: "Contact Email",
-  businessDescription: "Business Description",
+  description: "Description",
+  submit: "Submit",
+  cancel: "Cancel",
+  uploadLogo: "Upload Logo",
+  uploadEvidence: "Upload Evidence",
+  
+  // Store Verification
+  submitVerificationRequest: "Submit Verification Request",
+  verificationRequests: "Verification Requests",
+  verificationDetails: "Verification Details",
+  documents: "Documents",
   legalDocuments: "Legal Representative Documents",
   constitutionDocuments: "Company Constitution Documents",
+  
+  // Status
   status: "Status",
-  actions: "Actions",
-  view: "View",
   pending: "Pending",
   verified: "Verified",
   rejected: "Rejected",
-  uploadLogo: "Upload Logo",
-  verificationDetails: "Verification Details",
-  documents: "Documents",
+  
+  // Actions
+  actions: "Actions",
+  view: "View",
   approve: "Approve",
   reject: "Reject",
-  close: "Close",
-  
-  // Form Fields
-  uploadLogoDescription: "Upload your store logo",
-  logoRecommendedSize: "Recommended size: 512x512px",
-  uploadEvidence: "Upload Evidence",
-  description: "Description",
-  submit: "Submit",
-  cancel: "Cancel"
+  close: "Close"
 };

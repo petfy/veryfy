@@ -1,5 +1,5 @@
 export const fr = {
-  // Navigation & Dashboard
+  // Navigation & Common UI
   dashboard: "Tableau de Bord",
   pendingVerifications: "Vérifications en Attente",
   pendingReports: "Rapports en Attente",
@@ -8,36 +8,50 @@ export const fr = {
   scamReports: "Rapports de Fraude",
   signOut: "Déconnexion",
   verifyLink: "Veryfy Admin",
+  login: "Connexion",
+  register: "S'inscrire",
   
-  // Store Verifications Page
-  submitVerificationRequest: "Soumettre une Demande de Vérification",
-  verificationRequests: "Demandes de Vérification",
+  // Landing Page
+  heroTitle: "Protégez Votre E-commerce",
+  heroSubtitle: "Faites-vous vérifier et rejoignez notre réseau de boutiques en ligne de confiance",
+  getStarted: "Commencer",
+  learnMore: "En Savoir Plus",
+  trustedBy: "Fait Confiance par les Principales Plateformes E-commerce",
+  customerStories: "Témoignages Clients",
+  howItWorks: "Comment Ça Marche",
+  features: "Fonctionnalités",
+  faq: "Questions Fréquentes",
+  
+  // Forms
   storeName: "Nom du Magasin",
   storeUrl: "URL du Magasin",
-  businessLegalName: "Nom Légal de l'Entreprise",
+  businessName: "Nom de l'Entreprise",
   businessType: "Type d'Entreprise",
   contactEmail: "Email de Contact",
-  businessDescription: "Description de l'Entreprise",
+  description: "Description",
+  submit: "Soumettre",
+  cancel: "Annuler",
+  uploadLogo: "Télécharger Logo",
+  uploadEvidence: "Télécharger Preuve",
+  
+  // Store Verification
+  submitVerificationRequest: "Soumettre une Demande de Vérification",
+  verificationRequests: "Demandes de Vérification",
+  verificationDetails: "Détails de Vérification",
+  documents: "Documents",
   legalDocuments: "Documents du Représentant Légal",
   constitutionDocuments: "Documents de Constitution",
+  
+  // Status
   status: "Statut",
-  actions: "Actions",
-  view: "Voir",
   pending: "En Attente",
   verified: "Vérifié",
   rejected: "Rejeté",
-  uploadLogo: "Télécharger Logo",
-  verificationDetails: "Détails de Vérification",
-  documents: "Documents",
+  
+  // Actions
+  actions: "Actions",
+  view: "Voir",
   approve: "Approuver",
   reject: "Rejeter",
-  close: "Fermer",
-  
-  // Form Fields
-  uploadLogoDescription: "Téléchargez le logo de votre magasin",
-  logoRecommendedSize: "Taille recommandée : 512x512px",
-  uploadEvidence: "Télécharger une Preuve",
-  description: "Description",
-  submit: "Soumettre",
-  cancel: "Annuler"
+  close: "Fermer"
 };

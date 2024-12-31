@@ -1,43 +1,57 @@
 export const es = {
-  // Navigation & Dashboard
+  // Navigation & Common UI
   dashboard: "Panel de Control",
   pendingVerifications: "Verificaciones Pendientes",
   pendingReports: "Reportes Pendientes",
-  totalStores: "Tiendas Totales",
+  totalStores: "Total de Tiendas",
   storeVerifications: "Verificaciones de Tiendas",
-  scamReports: "Reportes de Estafa",
+  scamReports: "Reportes de Fraude",
   signOut: "Cerrar Sesión",
   verifyLink: "Veryfy Admin",
+  login: "Iniciar Sesión",
+  register: "Registrarse",
   
-  // Store Verifications Page
-  submitVerificationRequest: "Enviar Solicitud de Verificación",
-  verificationRequests: "Solicitudes de Verificación",
+  // Landing Page
+  heroTitle: "Protege tu Negocio de E-commerce",
+  heroSubtitle: "Obtén la verificación y únete a nuestra red de tiendas en línea confiables",
+  getStarted: "Comenzar",
+  learnMore: "Más Información",
+  trustedBy: "Respaldado por Principales Plataformas de E-commerce",
+  customerStories: "Historias de Clientes",
+  howItWorks: "Cómo Funciona",
+  features: "Características",
+  faq: "Preguntas Frecuentes",
+  
+  // Forms
   storeName: "Nombre de la Tienda",
   storeUrl: "URL de la Tienda",
-  businessLegalName: "Nombre Legal del Negocio",
+  businessName: "Nombre del Negocio",
   businessType: "Tipo de Negocio",
   contactEmail: "Correo de Contacto",
-  businessDescription: "Descripción del Negocio",
+  description: "Descripción",
+  submit: "Enviar",
+  cancel: "Cancelar",
+  uploadLogo: "Subir Logo",
+  uploadEvidence: "Subir Evidencia",
+  
+  // Store Verification
+  submitVerificationRequest: "Enviar Solicitud de Verificación",
+  verificationRequests: "Solicitudes de Verificación",
+  verificationDetails: "Detalles de Verificación",
+  documents: "Documentos",
   legalDocuments: "Documentos del Representante Legal",
   constitutionDocuments: "Documentos de Constitución de la Empresa",
+  
+  // Status
   status: "Estado",
-  actions: "Acciones",
-  view: "Ver",
   pending: "Pendiente",
   verified: "Verificado",
   rejected: "Rechazado",
-  uploadLogo: "Subir Logo",
-  verificationDetails: "Detalles de Verificación",
-  documents: "Documentos",
+  
+  // Actions
+  actions: "Acciones",
+  view: "Ver",
   approve: "Aprobar",
   reject: "Rechazar",
-  close: "Cerrar",
-  
-  // Form Fields
-  uploadLogoDescription: "Sube el logo de tu tienda",
-  logoRecommendedSize: "Tamaño recomendado: 512x512px",
-  uploadEvidence: "Subir Evidencia",
-  description: "Descripción",
-  submit: "Enviar",
-  cancel: "Cancelar"
+  close: "Cerrar"
 };
