@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
 import { Store } from "./types";
 import { useTranslation } from "@/contexts/TranslationContext";
+import { TranslationKey } from "@/translations";
 
 interface StoreVerificationsTableProps {
   stores: Store[];
@@ -30,7 +31,7 @@ export function StoreVerificationsTable({
       rejected: "destructive",
     };
 
-    return <Badge variant={variants[status]}>{t(status)}</Badge>;
+    return <Badge variant={variants[status]}>{t(status as TranslationKey)}</Badge>;
   };
 
   return (
@@ -38,10 +39,10 @@ export function StoreVerificationsTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t("storeName")}</TableHead>
-            <TableHead>{t("storeUrl")}</TableHead>
-            <TableHead>{t("status")}</TableHead>
-            <TableHead>{t("actions")}</TableHead>
+            <TableHead>{t("storeName" as TranslationKey)}</TableHead>
+            <TableHead>{t("storeUrl" as TranslationKey)}</TableHead>
+            <TableHead>{t("status" as TranslationKey)}</TableHead>
+            <TableHead>{t("actions" as TranslationKey)}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -66,7 +67,7 @@ export function StoreVerificationsTable({
                   onClick={() => onViewDetails(store)}
                 >
                   <Eye className="w-4 h-4 mr-1" />
-                  {t("view")}
+                  {t("view" as TranslationKey)}
                 </Button>
               </TableCell>
             </TableRow>

@@ -9,13 +9,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/contexts/TranslationContext";
+import { SupportedLanguages } from "@/translations";
 
 const SUPPORTED_LANGUAGES = [
-  { code: "en", name: "English" },
-  { code: "es", name: "Español" },
-  { code: "fr", name: "Français" },
-  { code: "de", name: "Deutsch" },
-];
+  { code: "en" as const, name: "English" },
+  { code: "es" as const, name: "Español" },
+  { code: "fr" as const, name: "Français" },
+  { code: "de" as const, name: "Deutsch" },
+] as const;
 
 export function LanguageSelector() {
   const { currentLanguage, setCurrentLanguage } = useTranslation();
@@ -35,14 +36,14 @@ export function LanguageSelector() {
       const detectedLang = text || browserLang;
       
       if (SUPPORTED_LANGUAGES.some(lang => lang.code === detectedLang)) {
-        setCurrentLanguage(detectedLang);
+        setCurrentLanguage(detectedLang as SupportedLanguages);
       }
     } catch (error) {
       console.error("Error detecting language:", error);
     }
   };
 
-  const handleLanguageChange = async (langCode: string) => {
+  const handleLanguageChange = async (langCode: SupportedLanguages) => {
     setCurrentLanguage(langCode);
     console.log(`Language changed to: ${langCode}`);
   };
