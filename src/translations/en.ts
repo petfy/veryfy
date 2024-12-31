@@ -82,30 +82,10 @@ export const en = {
   privacyPolicy: "Privacy Policy",
   termsOfService: "Terms of Service",
   cookiePolicy: "Cookie Policy",
-  copyright: "© {year} Veryfy. All rights reserved.",
-  
-  // Forms
-  storeName: "Store Name",
-  storeUrl: "Store URL",
-  businessName: "Business Name",
-  businessType: "Business Type",
-  contactEmail: "Contact Email",
-  description: "Description",
-  submit: "Submit",
-  cancel: "Cancel",
-  uploadLogo: "Upload Logo",
-  uploadEvidence: "Upload Evidence",
-  
-  // Status
-  status: "Status",
-  pending: "Pending",
-  verified: "Verified",
-  rejected: "Rejected",
-  
-  // Actions
-  actions: "Actions",
-  view: "View",
-  approve: "Approve",
-  reject: "Reject",
-  close: "Close"
+  copyright: "© {0} Veryfy. All rights reserved.",
+
+  // TopBar Messages
+  getVerifyBadge: "Get your official Veryfy Trust Badge",
+  verifiedStore: "Verified Official Store by",
+  checkStore: "Check Store",
 };

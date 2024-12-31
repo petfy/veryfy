@@ -82,38 +82,10 @@ export const fr = {
   privacyPolicy: "Politique de Confidentialité",
   termsOfService: "Conditions d'Utilisation",
   cookiePolicy: "Politique de Cookies",
-  copyright: "© {year} Veryfy. Tous droits réservés.",
+  copyright: "© {0} Veryfy. Tous droits réservés.",
 
-  // Forms
-  storeName: "Nom du Magasin",
-  storeUrl: "URL du Magasin",
-  businessName: "Nom de l'Entreprise",
-  businessType: "Type d'Entreprise",
-  contactEmail: "Email de Contact",
-  description: "Description",
-  submit: "Soumettre",
-  cancel: "Annuler",
-  uploadLogo: "Télécharger Logo",
-  uploadEvidence: "Télécharger Preuve",
-  
-  // Store Verification
-  submitVerificationRequest: "Soumettre une Demande de Vérification",
-  verificationRequests: "Demandes de Vérification",
-  verificationDetails: "Détails de Vérification",
-  documents: "Documents",
-  legalDocuments: "Documents du Représentant Légal",
-  constitutionDocuments: "Documents de Constitution",
-  
-  // Status
-  status: "Statut",
-  pending: "En Attente",
-  verified: "Vérifié",
-  rejected: "Rejeté",
-  
-  // Actions
-  actions: "Actions",
-  view: "Voir",
-  approve: "Approuver",
-  reject: "Rejeter",
-  close: "Fermer"
+  // TopBar Messages
+  getVerifyBadge: "Obtenez votre Badge de Confiance Veryfy",
+  verifiedStore: "Boutique Officielle Vérifiée par",
+  checkStore: "Vérifier la Boutique",
 };

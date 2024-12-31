@@ -82,17 +82,10 @@ export const de = {
   privacyPolicy: "Datenschutzrichtlinie",
   termsOfService: "Nutzungsbedingungen",
   cookiePolicy: "Cookie-Richtlinie",
-  copyright: "© {year} Veryfy. Alle Rechte vorbehalten.",
+  copyright: "© {0} Veryfy. Alle Rechte vorbehalten.",
 
-  // Forms
-  storeName: "Geschäftsname",
-  storeUrl: "Geschäfts-URL",
-  businessName: "Firmenname",
-  businessType: "Unternehmensart",
-  contactEmail: "Kontakt-E-Mail",
-  description: "Beschreibung",
-  submit: "Absenden",
-  cancel: "Abbrechen",
-  uploadLogo: "Logo Hochladen",
-  uploadEvidence: "Beweise Hochladen",
+  // TopBar Messages
+  getVerifyBadge: "Holen Sie sich Ihr offizielles Veryfy Vertrauenssiegel",
+  verifiedStore: "Verifizierter Offizieller Shop von",
+  checkStore: "Shop Überprüfen",
 };

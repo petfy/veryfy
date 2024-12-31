@@ -46,7 +46,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 md:mt-12 pt-6 md:pt-8 text-center text-sm md:text-base text-gray-400">
-          <p>{t("copyright", { year: new Date().getFullYear() })}</p>
+          <p>{t("copyright", [new Date().getFullYear().toString()])}</p>
         </div>
       </div>
     </footer>

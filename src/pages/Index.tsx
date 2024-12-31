@@ -14,24 +14,23 @@ import { ArrowUpRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { TranslationProvider } from "@/contexts/TranslationContext";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(true);
   const demoRegistrationNumber = "VF-2024-DEMO";
   const demoVerifyUrl = generateVerifyUrl(demoRegistrationNumber);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    // Initialize Supabase auth state
     const initializeAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        // If no session exists, clear any stale auth data
         if (!session) {
           await supabase.auth.signOut();
         }
       } catch (error) {
         console.error("Auth initialization error:", error);
-        // If there's an error, ensure we clear any invalid auth state
         await supabase.auth.signOut();
       }
     };
@@ -61,7 +60,7 @@ const Index = () => {
             <div className="relative w-full px-4 flex justify-center">
               <div className="bg-white px-3 md:px-6 py-2 md:py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce mt-8 md:mt-12">
                 <span className="text-xs md:text-lg font-semibold text-primary whitespace-nowrap">
-                  Get your official Veryfy Trust Badge
+                  {t("getVerifyBadge")}
                 </span>
                 <ArrowUpRight className="w-4 h-4 md:w-6 md:h-6 text-primary flex-shrink-0" />
               </div>
