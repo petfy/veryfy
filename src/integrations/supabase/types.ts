@@ -72,6 +72,8 @@ export type Database = {
           id: string
           logo_url: string | null
           name: string
+          subscription_expires_at: string | null
+          subscription_status: string | null
           updated_at: string
           url: string
           user_id: string
@@ -82,6 +84,8 @@ export type Database = {
           id?: string
           logo_url?: string | null
           name: string
+          subscription_expires_at?: string | null
+          subscription_status?: string | null
           updated_at?: string
           url: string
           user_id: string
@@ -92,6 +96,8 @@ export type Database = {
           id?: string
           logo_url?: string | null
           name?: string
+          subscription_expires_at?: string | null
+          subscription_status?: string | null
           updated_at?: string
           url?: string
           user_id?: string
@@ -101,8 +107,10 @@ export type Database = {
       }
       verification_badges: {
         Row: {
+          allowed_domain: string
           badge_type: string
           created_at: string
+          expires_at: string | null
           id: string
           is_active: boolean | null
           registration_number: string
@@ -110,8 +118,10 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          allowed_domain?: string
           badge_type: string
           created_at?: string
+          expires_at?: string | null
           id?: string
           is_active?: boolean | null
           registration_number: string
@@ -119,8 +129,10 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          allowed_domain?: string
           badge_type?: string
           created_at?: string
+          expires_at?: string | null
           id?: string
           is_active?: boolean | null
           registration_number?: string

@@ -10,17 +10,6 @@ interface VerifyTopBarProps {
   isPreview?: boolean;
 }
 
-const demoStore: Store = {
-  id: "demo-id",
-  user_id: "demo-user",
-  name: "Demo Store",
-  url: "https://demo-store.com",
-  verification_status: "verified",
-  created_at: "2024-01-01T00:00:00.000Z",
-  updated_at: "2024-01-01T00:00:00.000Z", // Added updated_at property
-  logo_url: null
-};
-
 export function VerifyTopBar({ registrationNumber, verifyUrl, isPreview = false }: VerifyTopBarProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -39,54 +28,97 @@ export function VerifyTopBar({ registrationNumber, verifyUrl, isPreview = false 
     }
   }, [isPreview]);
 
-  const fetchStoreProfile = async () => {
+  const validateBadge = async () => {
     try {
-      console.log("Fetching store profile for registration:", registrationNumber);
-      
       if (isPreview) {
         console.log("Using demo store data");
-        setStore(demoStore);
-        return;
+        setStore({
+          id: "demo-id",
+          user_id: "demo-user",
+          name: "Demo Store",
+          url: "https://demo-store.com",
+          verification_status: "verified",
+          created_at: "2024-01-01T00:00:00.000Z",
+          updated_at: "2024-01-01T00:00:00.000Z",
+          logo_url: null
+        });
+        return true;
       }
+
+      // Get current domain
+      const currentDomain = window.location.hostname;
 
       const { data: badge, error: badgeError } = await supabase
         .from("verification_badges")
-        .select("store_id")
+        .select(`
+          *,
+          store:stores (
+            subscription_status,
+            subscription_expires_at
+          )
+        `)
         .eq("registration_number", registrationNumber)
         .maybeSingle();
 
       if (badgeError) {
         console.error("Error fetching badge:", badgeError);
-        return;
+        return false;
       }
 
-      console.log("Badge data:", badge);
-
-      if (badge?.store_id) {
-        const { data: storeData, error: storeError } = await supabase
-          .from("stores")
-          .select("*")
-          .eq("id", badge.store_id)
-          .maybeSingle();
-
-        if (storeError) {
-          console.error("Error fetching store:", storeError);
-          return;
-        }
-
-        console.log("Store data:", storeData);
-
-        if (storeData) {
-          setStore(storeData);
-        }
+      if (!badge) {
+        console.error("Badge not found");
+        return false;
       }
+
+      // Check domain
+      if (badge.allowed_domain && !currentDomain.includes(badge.allowed_domain)) {
+        console.error("Invalid domain for badge");
+        return false;
+      }
+
+      // Check expiration
+      if (badge.expires_at && new Date(badge.expires_at) < new Date()) {
+        console.error("Badge has expired");
+        return false;
+      }
+
+      // Check subscription
+      if (badge.store?.subscription_status !== 'active' || 
+          (badge.store?.subscription_expires_at && 
+           new Date(badge.store.subscription_expires_at) < new Date())) {
+        console.error("Store subscription is inactive or expired");
+        return false;
+      }
+
+      const { data: storeData, error: storeError } = await supabase
+        .from("stores")
+        .select("*")
+        .eq("id", badge.store_id)
+        .maybeSingle();
+
+      if (storeError) {
+        console.error("Error fetching store:", storeError);
+        return false;
+      }
+
+      if (storeData) {
+        setStore(storeData);
+        return true;
+      }
+
+      return false;
     } catch (error) {
-      console.error("Error in fetchStoreProfile:", error);
+      console.error("Error in validateBadge:", error);
+      return false;
     }
   };
 
   useEffect(() => {
-    fetchStoreProfile();
+    validateBadge().then(isValid => {
+      if (!isValid && !isPreview) {
+        setIsVisible(false);
+      }
+    });
   }, [isPreview, registrationNumber]);
 
   const handleCheckStore = () => {
@@ -104,12 +136,13 @@ export function VerifyTopBar({ registrationNumber, verifyUrl, isPreview = false 
         style={{
           height: '40px',
           transition: 'all 0.3s ease',
-          animation: !isPreview ? 'fadeOut 0.5s ease-out 20s forwards' : undefined
+          animation: !isPreview ? 'fadeOut 0.5s ease-out 20s forwards' : undefined,
+          zIndex: 50
         }}
       >
         <button 
           onClick={() => setIsVisible(false)}
-          className="absolute right-2 top-2 text-gray-500 hover:text-gray-700 transition-colors z-10"
+          className="absolute right-2 top-2 text-gray-500 hover:text-gray-700 transition-colors"
           aria-label="Close"
         >
           <svg 
@@ -145,7 +178,7 @@ export function VerifyTopBar({ registrationNumber, verifyUrl, isPreview = false 
                 <ShoppingBag className="h-4 w-4 mx-1 text-blue-600" />
                 <button
                   onClick={handleCheckStore}
-                  className="text-blue-600 hover:text-blue-800 transition-colors ml-1"
+                  className="text-blue-600 hover:text-blue-800 text-xs"
                 >
                   Check Store
                 </button>
