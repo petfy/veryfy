@@ -39,6 +39,12 @@ export type Database = {
       scam_reports: {
         Row: {
           created_at: string
+          customer_address: string | null
+          customer_city: string | null
+          customer_country: string | null
+          customer_first_name: string | null
+          customer_last_name: string | null
+          customer_phone: string | null
           description: string
           evidence_url: string | null
           id: string
@@ -48,6 +54,12 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_country?: string | null
+          customer_first_name?: string | null
+          customer_last_name?: string | null
+          customer_phone?: string | null
           description: string
           evidence_url?: string | null
           id?: string
@@ -57,6 +69,12 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_country?: string | null
+          customer_first_name?: string | null
+          customer_last_name?: string | null
+          customer_phone?: string | null
           description?: string
           evidence_url?: string | null
           id?: string

@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
   Form,
+  FormField,
   FormControl,
   FormDescription,
-  FormField,
   FormItem,
   FormLabel,
   FormMessage,
@@ -16,31 +15,39 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { CustomerInfoFields } from "./CustomerInfoFields";
+import { scamReportSchema, type ScamReportFormData } from "./types";
 
-const formSchema = z.object({
-  reported_email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters.",
-  }),
-});
+interface ScamReportFormProps {
+  onSuccess: () => void;
+}
 
-export function ScamReportForm({ onSuccess }: { onSuccess: () => void }) {
+export function ScamReportForm({ onSuccess }: ScamReportFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<ScamReportFormData>({
+    resolver: zodResolver(scamReportSchema),
     defaultValues: {
       reported_email: "",
       description: "",
+      customer_first_name: "",
+      customer_last_name: "",
+      customer_phone: "",
+      customer_address: "",
+      customer_city: "",
+      customer_country: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: ScamReportFormData) => {
     if (!selectedFile) {
       toast({
         variant: "destructive",
@@ -78,21 +85,19 @@ export function ScamReportForm({ onSuccess }: { onSuccess: () => void }) {
         reported_email: values.reported_email,
         description: values.description,
         evidence_url: publicUrl,
+        customer_first_name: values.customer_first_name,
+        customer_last_name: values.customer_last_name,
+        customer_phone: values.customer_phone,
+        customer_address: values.customer_address,
+        customer_city: values.customer_city,
+        customer_country: values.customer_country,
       });
 
       if (reportError) throw reportError;
 
-      // Notify verified stores
-      await supabase.functions.invoke("notify-stores", {
-        body: {
-          reportedEmail: values.reported_email,
-          description: values.description,
-        },
-      });
-
       toast({
         title: "Report Submitted",
-        description: "The scam report has been submitted and stores have been notified.",
+        description: "The scam report has been submitted successfully.",
       });
 
       form.reset();
@@ -142,7 +147,7 @@ export function ScamReportForm({ onSuccess }: { onSuccess: () => void }) {
       <DialogHeader>
         <DialogTitle>Report a Scam</DialogTitle>
         <DialogDescription>
-          Report a customer who has attempted or committed fraud. This will notify all verified stores.
+          Report a customer who has attempted or committed fraud.
         </DialogDescription>
       </DialogHeader>
       <Form {...form}>
@@ -163,6 +168,7 @@ export function ScamReportForm({ onSuccess }: { onSuccess: () => void }) {
               </FormItem>
             )}
           />
+          <CustomerInfoFields form={form} />
           <FormField
             control={form.control}
             name="description"
