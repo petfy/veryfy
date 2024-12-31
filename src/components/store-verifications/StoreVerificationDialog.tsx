@@ -64,25 +64,12 @@ export function StoreVerificationDialog({
     const type = badge.badge_type;
     
     const code = `<!-- Veryfy ${type === "topbar" ? "Top Bar" : "Footer"} Badge -->
-<script>
-  (function() {
-    // Create container element
-    const container = document.createElement('div');
-    container.id = 'verify-link-${type}';
-    ${type === "topbar" 
-      ? "document.body.insertBefore(container, document.body.firstChild);" 
-      : "document.body.appendChild(container);"}
-    
-    // Load Veryfy badge script
-    const script = document.createElement('script');
-    script.src = 'https://veryfy.link/badge/${type}.js';
-    script.async = true;
-    script.defer = true;
-    script.setAttribute('data-registration', '${badge.registration_number}');
-    script.setAttribute('data-verify-url', '${verifyUrl}');
-    script.setAttribute('data-allowed-domain', '${badge.allowed_domain}');
-    document.head.appendChild(script);
-  })();
+<div id="verify-link-${type}"></div>
+<script src="https://veryfy.link/badge/${type}.js" 
+  data-registration="${badge.registration_number}"
+  data-verify-url="${verifyUrl}"
+  data-allowed-domain="${badge.allowed_domain}"
+  async defer>
 </script>`;
 
     return code;
