@@ -80,6 +80,21 @@
       stroke-linecap: round;
       stroke-linejoin: round;
     }
+    .veryfy-store-info {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      z-index: 49;
+    }
+    .veryfy-store-info.active {
+      display: block;
+    }
     @keyframes slideIn {
       from { transform: translateX(-20px); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
@@ -101,16 +116,27 @@
           <a href="https://veryfy.link" target="_blank" rel="noopener noreferrer" class="veryfy-topbar-link">
             Veryfy
           </a>
-          <button class="veryfy-topbar-store" onclick="window.location.href='${verifyUrl}'">
+          <button class="veryfy-topbar-store" onclick="toggleStoreInfo()">
             <svg viewBox="0 0 24 24">
-              <path d="M21 12V7H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5m-4 2h4m-4-4h4"></path>
-              <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
-              <path d="M19 3h-2"></path>
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+              <path d="M3 6h18"></path>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
             Check Store
           </button>
         </span>
       </div>
+      <div id="veryfy-store-info" class="veryfy-store-info">
+        <iframe src="${verifyUrl}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+      </div>
     `;
+
+    // Add toggle function to window scope
+    window.toggleStoreInfo = function() {
+      const storeInfo = document.getElementById('veryfy-store-info');
+      if (storeInfo) {
+        storeInfo.classList.toggle('active');
+      }
+    };
   }
 })();
