@@ -18,6 +18,18 @@ const SUPPORTED_LANGUAGES = [
   { code: "de" as const, name: "Deutsch" },
 ] as const;
 
+const COUNTRY_TO_LANGUAGE: { [key: string]: SupportedLanguages } = {
+  US: "en",
+  GB: "en",
+  ES: "es",
+  MX: "es",
+  AR: "es",
+  FR: "fr",
+  DE: "de",
+  AT: "de",
+  CH: "de",
+};
+
 export function LanguageSelector() {
   const { currentLanguage, setCurrentLanguage } = useTranslation();
 
@@ -27,19 +39,38 @@ export function LanguageSelector() {
 
   const detectUserLanguage = async () => {
     try {
+      // First try to get user's country from IP
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+      const countryCode = data.country_code;
+      
+      // If we have a matching language for the country, use it
+      if (countryCode && COUNTRY_TO_LANGUAGE[countryCode]) {
+        setCurrentLanguage(COUNTRY_TO_LANGUAGE[countryCode]);
+        return;
+      }
+
+      // Fallback to browser language if no country match
       const browserLang = navigator.language.split("-")[0];
       
+      // Verify if browser language is supported
+      if (SUPPORTED_LANGUAGES.some(lang => lang.code === browserLang)) {
+        setCurrentLanguage(browserLang as SupportedLanguages);
+        return;
+      }
+
+      // If all else fails, try Google Translate API
       const { data: { text } } = await supabase.functions.invoke('detect-language', {
         body: { text: "Welcome to our platform" }
       });
 
-      const detectedLang = text || browserLang;
-      
-      if (SUPPORTED_LANGUAGES.some(lang => lang.code === detectedLang)) {
-        setCurrentLanguage(detectedLang as SupportedLanguages);
+      if (text && SUPPORTED_LANGUAGES.some(lang => lang.code === text)) {
+        setCurrentLanguage(text as SupportedLanguages);
       }
     } catch (error) {
       console.error("Error detecting language:", error);
+      // Fallback to English if everything fails
+      setCurrentLanguage("en");
     }
   };
 

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Shield } from "lucide-react"; // Correct import for the Shield icon
+import { Shield } from "lucide-react";
+import { LanguageSelector } from "./LanguageSelector";
 
 export const Navbar = () => {
   return (
@@ -9,7 +10,8 @@ export const Navbar = () => {
         <Link to="/" className="text-2xl font-bold text-primary">
           <Shield className="inline-block w-5 h-5 mr-2 text-primary" /> Veryfy
         </Link>
-        <div className="flex gap-4">
+        <div className="flex items-center gap-4">
+          <LanguageSelector />
           <Link to="/login">
             <Button variant="outline">Login</Button>
           </Link>
