@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/contexts/TranslationContext";
 import { SupportedLanguages } from "@/translations";
+import { cn } from "@/lib/utils";
 
 const SUPPORTED_LANGUAGES = [
   { code: "en" as const, name: "English" },
@@ -30,7 +31,11 @@ const COUNTRY_TO_LANGUAGE: { [key: string]: SupportedLanguages } = {
   CH: "de",
 };
 
-export function LanguageSelector() {
+interface LanguageSelectorProps {
+  className?: string;
+}
+
+export function LanguageSelector({ className }: LanguageSelectorProps) {
   const { currentLanguage, setCurrentLanguage } = useTranslation();
 
   useEffect(() => {
@@ -82,7 +87,11 @@ export function LanguageSelector() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-9 w-9">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className={cn("h-9 w-9 text-white hover:bg-primary/80", className)}
+        >
           <Globe className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>

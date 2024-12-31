@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link, Outlet } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, ShieldCheck, AlertOctagon, LogOut } from "lucide-react";
+import { LayoutDashboard, ShieldCheck, AlertOctagon, LogOut, Menu } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LanguageSelector } from "./LanguageSelector";
 import { useTranslation } from "@/contexts/TranslationContext";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
   const { toast } = useToast();
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    // Set menu closed by default on mobile
+    if (isMobile) {
+      setIsMenuOpen(false);
+    }
+  }, [isMobile]);
 
   useEffect(() => {
     // Check initial session
@@ -40,7 +52,6 @@ export default function AdminLayout() {
       }
     });
 
-    // Cleanup subscription
     return () => subscription.unsubscribe();
   }, [navigate, toast]);
 
@@ -53,49 +64,73 @@ export default function AdminLayout() {
     return <div>Loading...</div>;
   }
 
+  const menuItems = [
+    { icon: LayoutDashboard, label: "dashboard", path: "/admin" },
+    { icon: ShieldCheck, label: "storeVerifications", path: "/admin/verifications" },
+    { icon: AlertOctagon, label: "scamReports", path: "/admin/reports" },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex h-screen">
-        <div className="w-64 bg-primary text-white">
+        {/* Sidebar */}
+        <div
+          className={cn(
+            "bg-primary text-white transition-all duration-300",
+            isMenuOpen ? "w-64" : "w-16",
+            "fixed h-full z-20"
+          )}
+        >
           <div className="p-4 flex justify-between items-center">
-            <h1 className="text-xl font-bold">{t("verifyLink")}</h1>
-            <LanguageSelector />
+            {isMenuOpen && <h1 className="text-xl font-bold">{t("verifyLink")}</h1>}
+            {!isMobile && <LanguageSelector />}
+            {isMobile && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-white"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            )}
           </div>
+
           <nav className="mt-8">
-            <Link
-              to="/admin"
-              className="flex items-center px-4 py-3 text-white hover:bg-primary/80"
-            >
-              <LayoutDashboard className="mr-3" />
-              {t("dashboard")}
-            </Link>
-            <Link
-              to="/admin/verifications"
-              className="flex items-center px-4 py-3 text-white hover:bg-primary/80"
-            >
-              <ShieldCheck className="mr-3" />
-              {t("storeVerifications")}
-            </Link>
-            <Link
-              to="/admin/reports"
-              className="flex items-center px-4 py-3 text-white hover:bg-primary/80"
-            >
-              <AlertOctagon className="mr-3" />
-              {t("scamReports")}
-            </Link>
+            {menuItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className="flex items-center px-4 py-3 text-white hover:bg-primary/80"
+              >
+                <item.icon className={cn("w-5 h-5", !isMenuOpen && "mx-auto")} />
+                {isMenuOpen && <span className="ml-3">{t(item.label)}</span>}
+              </Link>
+            ))}
           </nav>
-          <div className="absolute bottom-0 w-64 p-4">
+
+          <div className={cn(
+            "absolute bottom-0 w-full p-4",
+            isMenuOpen ? "w-64" : "w-16"
+          )}>
+            {isMobile && <LanguageSelector className="mb-4" />}
             <button
               onClick={handleSignOut}
               className="flex items-center px-4 py-3 text-white hover:bg-primary/80 w-full"
             >
-              <LogOut className="mr-3" />
-              {t("signOut")}
+              <LogOut className={cn("w-5 h-5", !isMenuOpen && "mx-auto")} />
+              {isMenuOpen && <span className="ml-3">{t("signOut")}</span>}
             </button>
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto">
+        {/* Main content */}
+        <div 
+          className={cn(
+            "flex-1 overflow-auto transition-all duration-300",
+            isMenuOpen ? "ml-64" : "ml-16"
+          )}
+        >
           <div className="p-8">
             <Outlet />
           </div>
