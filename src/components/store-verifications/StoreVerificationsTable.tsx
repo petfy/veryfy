@@ -12,6 +12,7 @@ import { Eye } from "lucide-react";
 import { Store } from "./types";
 import { useTranslation } from "@/contexts/TranslationContext";
 import { TranslationKey } from "@/translations";
+import { Avatar } from "@/components/ui/avatar";
 
 interface StoreVerificationsTableProps {
   stores: Store[];
@@ -39,6 +40,7 @@ export function StoreVerificationsTable({
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead className="w-[50px]"></TableHead>
             <TableHead>{t("storeName" as TranslationKey)}</TableHead>
             <TableHead>{t("storeUrl" as TranslationKey)}</TableHead>
             <TableHead>{t("status" as TranslationKey)}</TableHead>
@@ -48,6 +50,21 @@ export function StoreVerificationsTable({
         <TableBody>
           {stores.map((store) => (
             <TableRow key={store.id}>
+              <TableCell>
+                <Avatar className="h-8 w-8">
+                  {store.logo_url ? (
+                    <img 
+                      src={store.logo_url} 
+                      alt={store.name} 
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-muted flex items-center justify-center text-sm font-semibold">
+                      {store.name[0]}
+                    </div>
+                  )}
+                </Avatar>
+              </TableCell>
               <TableCell className="font-medium">{store.name}</TableCell>
               <TableCell>
                 <a
