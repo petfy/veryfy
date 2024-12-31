@@ -1,20 +1,28 @@
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Check, Copy, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Check, X } from "lucide-react";
+import { Store, Document } from "./types";
+import { useEffect, useState } from "react";
 import { generateVerifyUrl } from "@/lib/verification";
-import { DocumentsSection } from "@/components/verification-badges/DocumentsSection";
-import { StoreDetailsSection } from "@/components/verification-badges/StoreDetailsSection";
-import { BadgeCodeDisplay } from "@/components/verification-badges/BadgeCodeDisplay";
-import type { Store, Document } from "./types";
+import { supabase } from "@/integrations/supabase/client";
+import { VerifyTopBar } from "../verification-badges";
+import { VerifyFooter } from "../verification-badges";
+import { BadgeCodeDisplay } from "../verification-badges/BadgeCodeDisplay";
+import { StoreDetailsSection } from "../verification-badges/StoreDetailsSection";
+import { DocumentsSection } from "../verification-badges/DocumentsSection";
 
 interface StoreVerificationDialogProps {
   store: Store | null;
   documents: Document[];
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onVerificationAction: (storeId: string, status: "verified" | "rejected") => Promise<void>;
+  onVerificationAction: (storeId: string, status: "verified" | "rejected") => void;
 }
 
 export function StoreVerificationDialog({
@@ -24,116 +32,124 @@ export function StoreVerificationDialog({
   onOpenChange,
   onVerificationAction,
 }: StoreVerificationDialogProps) {
-  const [copied, setCopied] = useState<string | null>(null);
-  const { toast } = useToast();
+  const [badges, setBadges] = useState<any[]>([]);
 
-  if (!store) return null;
+  const fetchBadges = async (storeId: string) => {
+    const { data: verificationData } = await supabase
+      .from("stores")
+      .select(`
+        verification_badges (
+          id,
+          registration_number,
+          badge_type,
+          allowed_domain
+        )
+      `)
+      .eq("id", storeId)
+      .single();
 
-  const handleCopy = async (code: string, type: string) => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(type);
-      setTimeout(() => setCopied(null), 2000);
-      toast({
-        title: "Success",
-        description: "Code copied to clipboard",
-      });
-    } catch (err) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to copy code",
-      });
+    if (verificationData?.verification_badges) {
+      setBadges(verificationData.verification_badges);
     }
   };
 
-  const generateEmbedCode = (badge: { badge_type: string; registration_number: string; allowed_domain: string }) => {
+  useEffect(() => {
+    if (store?.id && store.verification_status === "verified") {
+      fetchBadges(store.id);
+    }
+  }, [store]);
+
+  const getBadgeCode = (badge: any) => {
     const verifyUrl = generateVerifyUrl(badge.registration_number);
     const type = badge.badge_type;
     
     const code = `<!-- Veryfy ${type === "topbar" ? "Top Bar" : "Footer"} Badge -->
-<div id="verify-link-${type}"></div>
-<script 
-  src="https://veryfy.link/badge/${type}.js"
-  data-registration="${badge.registration_number}"
-  data-verify-url="${verifyUrl}"
-  data-allowed-domain="${badge.allowed_domain}"
-  async 
-  defer
-></script>`;
+<script>
+  (function() {
+    // Create container element
+    const container = document.createElement('div');
+    container.id = 'verify-link-${type}';
+    ${type === "topbar" 
+      ? "document.body.insertBefore(container, document.body.firstChild);" 
+      : "document.body.appendChild(container);"}
+    
+    // Load Veryfy badge script
+    const script = document.createElement('script');
+    script.src = 'https://veryfy.link/badge/${type}.js';
+    script.async = true;
+    script.defer = true;
+    script.setAttribute('data-registration', '${badge.registration_number}');
+    script.setAttribute('data-verify-url', '${verifyUrl}');
+    script.setAttribute('data-allowed-domain', '${badge.allowed_domain}');
+    document.head.appendChild(script);
+  })();
+</script>`;
 
     return code;
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Store Verification Details</DialogTitle>
         </DialogHeader>
+        <ScrollArea className="max-h-[600px] pr-4">
+          {store && (
+            <div className="space-y-6">
+              <StoreDetailsSection store={store} />
+              <DocumentsSection documents={documents} />
 
-        <div className="space-y-6">
-          <StoreDetailsSection store={store} />
-          <DocumentsSection documents={documents} />
+              {store.verification_status === "pending" && (
+                <div className="flex justify-end gap-2 pt-4">
+                  <Button
+                    variant="destructive"
+                    onClick={() => onVerificationAction(store.id, "rejected")}
+                  >
+                    <X className="w-4 h-4 mr-1" />
+                    Reject
+                  </Button>
+                  <Button onClick={() => onVerificationAction(store.id, "verified")}>
+                    <Check className="w-4 h-4 mr-1" />
+                    Approve
+                  </Button>
+                </div>
+              )}
 
-          {store.verification_status === "verified" && (
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Verification Badges</h3>
-              <div className="grid gap-4">
-                {["topbar", "footer"].map((type) => {
-                  const badge = {
-                    badge_type: type,
-                    registration_number: "VF-2024-DEMO",
-                    allowed_domain: "",
-                  };
-                  const code = generateEmbedCode(badge);
-
-                  return (
-                    <div key={type} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-sm font-medium">
-                          {type === "topbar" ? "Top Bar" : "Footer"} Badge
-                        </h4>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleCopy(code, type)}
-                        >
-                          {copied === type ? (
-                            <Check className="h-4 w-4 text-green-500" />
+              {store.verification_status === "verified" && badges.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Verification Badges</h3>
+                  <div className="space-y-6">
+                    {badges.map((badge) => (
+                      <BadgeCodeDisplay
+                        key={badge.id}
+                        title={`${badge.badge_type === 'topbar' ? 'Top Bar' : 'Footer'} Badge - Registration: ${badge.registration_number}`}
+                        code={getBadgeCode(badge)}
+                        preview={
+                          badge.badge_type === "topbar" ? (
+                            <div className="w-full">
+                              <VerifyTopBar
+                                registrationNumber={badge.registration_number}
+                                verifyUrl={generateVerifyUrl(badge.registration_number)}
+                                isPreview={true}
+                              />
+                            </div>
                           ) : (
-                            <Copy className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                      <BadgeCodeDisplay 
-                        code={code}
-                        preview={<div>Badge Preview</div>}
-                        title={`${type === "topbar" ? "Top Bar" : "Footer"} Badge Code`}
+                            <VerifyFooter
+                              registrationNumber={badge.registration_number}
+                              verifyUrl={generateVerifyUrl(badge.registration_number)}
+                              isPreview={true}
+                            />
+                          )
+                        }
                       />
-                    </div>
-                  );
-                })}
-              </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
-
-          {store.verification_status === "pending" && (
-            <div className="flex justify-end gap-4">
-              <Button
-                variant="outline"
-                onClick={() => onVerificationAction(store.id, "rejected")}
-              >
-                <X className="h-4 w-4 mr-2" />
-                Reject
-              </Button>
-              <Button onClick={() => onVerificationAction(store.id, "verified")}>
-                <Check className="h-4 w-4 mr-2" />
-                Verify
-              </Button>
-            </div>
-          )}
-        </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
