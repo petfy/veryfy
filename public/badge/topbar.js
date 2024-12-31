@@ -161,27 +161,37 @@
   `;
   document.head.appendChild(style);
 
-  // Function to fetch store data
-  async function fetchStoreData() {
-    try {
-      console.log('Fetching store data with:', {
-        verifyUrl,
-        registrationNumber,
-        endpoint: `${verifyUrl}/api/verification-badges/${registrationNumber}`
-      });
-      
-      const response = await fetch(`${verifyUrl}/api/verification-badges/${registrationNumber}`);
-      if (!response.ok) {
-        console.error('Failed to fetch store data:', response.status, response.statusText);
-        throw new Error('Failed to fetch store data');
+  // Function to fetch store data with retries
+  async function fetchStoreData(retries = 3) {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const endpoint = `${verifyUrl}/api/verification-badges/${registrationNumber}`;
+        console.log('Fetching store data from:', endpoint);
+        
+        const response = await fetch(endpoint, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Cache-Control': 'no-cache'
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Received store data:', data);
+        return data;
+      } catch (error) {
+        console.warn(`Attempt ${attempt} failed:`, error);
+        if (attempt === retries) {
+          console.error('All fetch attempts failed:', error);
+          return null;
+        }
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
       }
-      
-      const data = await response.json();
-      console.log('Received store data:', data);
-      return data;
-    } catch (error) {
-      console.error('Error fetching store data:', error);
-      return null;
     }
   }
 
@@ -216,59 +226,63 @@
       </div>
     `;
 
-    // Add toggle function to window scope
+    // Add toggle function to window scope with error handling
     window.toggleStoreInfo = async function() {
       const storeInfo = document.getElementById('veryfy-store-info');
       const storeDataContainer = document.getElementById('store-data-container');
       
-      if (storeInfo) {
-        const isActive = storeInfo.classList.toggle('active');
+      if (!storeInfo || !storeDataContainer) {
+        console.error('Required elements not found');
+        return;
+      }
+
+      const isActive = storeInfo.classList.toggle('active');
+      
+      if (isActive) {
+        storeDataContainer.innerHTML = 'Loading...';
+        const storeData = await fetchStoreData();
         
-        if (isActive && storeDataContainer) {
-          storeDataContainer.innerHTML = 'Loading...';
-          const storeData = await fetchStoreData();
-          
-          if (storeData && storeData.store) {
-            const store = storeData.store;
-            storeDataContainer.innerHTML = `
-              <div class="veryfy-store-header">
-                <div class="veryfy-store-logo">
-                  ${store.logo_url ? 
-                    `<img src="${store.logo_url}" alt="${store.name}" style="width: 100%; height: 100%; object-fit: cover;">` :
-                    store.name[0]
-                  }
-                </div>
-                <div class="veryfy-store-details">
-                  <h3>${store.name}</h3>
-                  <p>${store.url}</p>
-                  <p>Verification Status: ${store.verification_status}</p>
-                  <a href="${verifyUrl}/verification/${registrationNumber}" target="_blank">View Verification Details</a>
-                  <div class="veryfy-store-badge">
-                    <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Verified by Veryfy
-                  </div>
+        if (storeData && storeData.store) {
+          const store = storeData.store;
+          storeDataContainer.innerHTML = `
+            <div class="veryfy-store-header">
+              <div class="veryfy-store-logo">
+                ${store.logo_url ? 
+                  `<img src="${store.logo_url}" alt="${store.name}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                  store.name[0]
+                }
+              </div>
+              <div class="veryfy-store-details">
+                <h3>${store.name}</h3>
+                <p>${store.url}</p>
+                <p>Verification Status: ${store.verification_status}</p>
+                <a href="${verifyUrl}/verification/${registrationNumber}" target="_blank">View Verification Details</a>
+                <div class="veryfy-store-badge">
+                  <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Verified by Veryfy
                 </div>
               </div>
-            `;
-          } else {
-            storeDataContainer.innerHTML = `
-              <div class="veryfy-store-header">
-                <div class="veryfy-store-logo">V</div>
-                <div class="veryfy-store-details">
-                  <h3>Verified Store</h3>
-                  <a href="${verifyUrl}/verification/${registrationNumber}" target="_blank">View Verification Details</a>
-                  <div class="veryfy-store-badge">
-                    <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Verified by Veryfy
-                  </div>
+            </div>
+          `;
+        } else {
+          storeDataContainer.innerHTML = `
+            <div class="veryfy-store-header">
+              <div class="veryfy-store-logo">V</div>
+              <div class="veryfy-store-details">
+                <h3>Verified Store</h3>
+                <p>Unable to load store details. Please try again later.</p>
+                <a href="${verifyUrl}/verification/${registrationNumber}" target="_blank">View Verification Details</a>
+                <div class="veryfy-store-badge">
+                  <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Verified by Veryfy
                 </div>
               </div>
-            `;
-          }
+            </div>
+          `;
         }
       }
     };
