@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { ScamReportForm } from "@/components/scam-reports/ScamReportForm";
-import { RemovalRequestForm } from "@/components/scam-reports/RemovalRequestForm";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/contexts/TranslationContext";
 import {
   Table,
   TableBody,
@@ -19,29 +18,41 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Flag, Shield, ArrowUpDown } from "lucide-react";
-import type { ScamReport } from "@/components/scam-reports/types";
+import { ArrowUpDown, Flag, Shield } from "lucide-react";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { ScamReportForm } from "@/components/scam-reports/ScamReportForm";
+import { RemovalRequestForm } from "@/components/scam-reports/RemovalRequestForm";
 
 type SortField = "customer_name" | "report_count" | "created_at";
 
 export default function ApprovedScamList() {
+  const { t } = useTranslation();
+  const { toast } = useToast();
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
-  const { data: reports = [], isLoading } = useQuery({
+  const { data: reports, isLoading } = useQuery({
     queryKey: ["approved-scams", sortField, sortDirection],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("scam_reports")
         .select(`
           *,
-          report_count:count() over (partition by reported_email)
+          report_count:scam_reports(count)
         `)
         .eq("status", "approved")
         .order(sortField, { ascending: sortDirection === "asc" });
 
-      if (error) throw error;
-      return data as ScamReport[];
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to fetch approved scam reports",
+        });
+        return [];
+      }
+
+      return data;
     },
   });
 
@@ -61,7 +72,7 @@ export default function ApprovedScamList() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Approved Scam List</h1>
+        <h1 className="text-2xl font-bold">{t("approvedScamList")}</h1>
       </div>
 
       <Table>
@@ -72,21 +83,21 @@ export default function ApprovedScamList() {
                 variant="ghost"
                 onClick={() => handleSort("customer_name")}
               >
-                Customer Name
+                {t("customerName")}
                 <ArrowUpDown className="ml-2 h-4 w-4" />
               </Button>
             </TableHead>
-            <TableHead>Customer Details</TableHead>
+            <TableHead>{t("customerDetails")}</TableHead>
             <TableHead>
               <Button
                 variant="ghost"
                 onClick={() => handleSort("report_count")}
               >
-                Report Count
+                {t("reportCount")}
                 <ArrowUpDown className="ml-2 h-4 w-4" />
               </Button>
             </TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>{t("actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -97,7 +108,7 @@ export default function ApprovedScamList() {
               </TableCell>
               <TableCell>
                 <div className="space-y-1">
-                  <p>{report.reported_email}</p>
+                  <p>{report.customer_email}</p>
                   <p>{report.customer_phone}</p>
                   <p>
                     {report.customer_address}, {report.customer_city},{" "}
@@ -118,12 +129,12 @@ export default function ApprovedScamList() {
                       <DialogTrigger asChild>
                         <DropdownMenuItem>
                           <Flag className="mr-2 h-4 w-4" />
-                          Report Again
+                          {t("reportAgain")}
                         </DropdownMenuItem>
                       </DialogTrigger>
                       <ScamReportForm
-                        initialData={{
-                          reported_email: report.reported_email,
+                        defaultValues={{
+                          customer_email: report.reported_email,
                           customer_first_name: report.customer_first_name,
                           customer_last_name: report.customer_last_name,
                           customer_phone: report.customer_phone,
@@ -137,7 +148,7 @@ export default function ApprovedScamList() {
                       <DialogTrigger asChild>
                         <DropdownMenuItem>
                           <Shield className="mr-2 h-4 w-4" />
-                          Request Removal
+                          {t("requestRemoval")}
                         </DropdownMenuItem>
                       </DialogTrigger>
                       <RemovalRequestForm scamReportId={report.id} />

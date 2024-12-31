@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import type { RemovalRequestsTable } from "@/integrations/supabase/types/tables/removal-requests";
 
 const removalRequestSchema = z.object({
   reason: z.string().min(1, "Reason is required"),
@@ -32,10 +31,9 @@ type RemovalRequestFormValues = z.infer<typeof removalRequestSchema>;
 
 interface RemovalRequestFormProps {
   scamReportId: string;
-  onSuccess?: () => void;
 }
 
-export function RemovalRequestForm({ scamReportId, onSuccess }: RemovalRequestFormProps) {
+export function RemovalRequestForm({ scamReportId }: RemovalRequestFormProps) {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,15 +57,11 @@ export function RemovalRequestForm({ scamReportId, onSuccess }: RemovalRequestFo
         evidenceUrl = uploadData.path;
       }
 
-      const insertData: RemovalRequestsTable['Insert'] = {
+      const { error } = await supabase.from("removal_requests").insert({
         scam_report_id: scamReportId,
         reason: data.reason,
         evidence_url: evidenceUrl,
-      };
-
-      const { error } = await supabase
-        .from("removal_requests")
-        .insert(insertData);
+      });
 
       if (error) throw error;
 
@@ -75,8 +69,6 @@ export function RemovalRequestForm({ scamReportId, onSuccess }: RemovalRequestFo
         title: t("removalRequestSubmitted"),
         description: t("removalRequestSubmittedDesc"),
       });
-      
-      onSuccess?.();
     } catch (error) {
       toast({
         variant: "destructive",

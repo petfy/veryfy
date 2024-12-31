@@ -17,33 +17,6 @@ export default function AdminLayout() {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
 
-  // Add handleSignOut function
-  const handleSignOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "Sign Out Error",
-          description: error.message
-        });
-      } else {
-        toast({
-          title: "Signed Out",
-          description: "You have been successfully signed out"
-        });
-        navigate("/login");
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Sign Out Error",
-        description: "An unexpected error occurred"
-      });
-    }
-  };
-
   useEffect(() => {
     // Set menu closed by default on mobile
     if (isMobile) {
