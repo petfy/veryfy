@@ -4,6 +4,7 @@ import { useTranslation } from "@/contexts/TranslationContext";
 
 export const Footer = () => {
   const { t } = useTranslation();
+  const currentYear = new Date().getFullYear().toString();
 
   return (
     <footer className="bg-gray-900 text-white py-12 md:py-20">
@@ -46,7 +47,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 md:mt-12 pt-6 md:pt-8 text-center text-sm md:text-base text-gray-400">
-          <p>{t("copyright", [new Date().getFullYear().toString()])}</p>
+          <p>{t("copyright", [currentYear])}</p>
         </div>
       </div>
     </footer>

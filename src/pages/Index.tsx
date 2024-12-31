@@ -16,7 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { TranslationProvider } from "@/contexts/TranslationContext";
 import { useTranslation } from "@/contexts/TranslationContext";
 
-const Index = () => {
+const IndexContent = () => {
   const [showOverlay, setShowOverlay] = useState(true);
   const demoRegistrationNumber = "VF-2024-DEMO";
   const demoVerifyUrl = generateVerifyUrl(demoRegistrationNumber);
@@ -45,45 +45,51 @@ const Index = () => {
   }, []);
 
   return (
-    <TranslationProvider>
-      <div className="min-h-screen bg-white relative">
-        <div className="relative z-50">
-          <VerifyTopBar 
-            registrationNumber={demoRegistrationNumber}
-            verifyUrl={demoVerifyUrl}
-            isPreview={true}
-          />
-        </div>
-        
-        {showOverlay && (
-          <div className="fixed inset-0 pt-[40px] bg-black/50 z-[40] flex items-start justify-center animate-fade-in">
-            <div className="relative w-full px-4 flex justify-center">
-              <div className="bg-white px-3 md:px-6 py-2 md:py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce mt-8 md:mt-12">
-                <span className="text-xs md:text-lg font-semibold text-primary whitespace-nowrap">
-                  {t("getVerifyBadge")}
-                </span>
-                <ArrowUpRight className="w-4 h-4 md:w-6 md:h-6 text-primary flex-shrink-0" />
-              </div>
-            </div>
-          </div>
-        )}
-        
-        <Navbar />
-        <Hero />
-        <BrandCarousel />
-        <CustomerStories />
-        <VerificationProcess />
-        <Features />
-        <BlacklistSection />
-        <FAQ />
-        <Footer />
-        
-        <VerifyFooter
+    <div className="min-h-screen bg-white relative">
+      <div className="relative z-50">
+        <VerifyTopBar 
           registrationNumber={demoRegistrationNumber}
           verifyUrl={demoVerifyUrl}
           isPreview={true}
         />
       </div>
+      
+      {showOverlay && (
+        <div className="fixed inset-0 pt-[40px] bg-black/50 z-[40] flex items-start justify-center animate-fade-in">
+          <div className="relative w-full px-4 flex justify-center">
+            <div className="bg-white px-3 md:px-6 py-2 md:py-3 rounded-lg shadow-lg flex items-center gap-2 animate-bounce mt-8 md:mt-12">
+              <span className="text-xs md:text-lg font-semibold text-primary whitespace-nowrap">
+                {t("getVerifyBadge")}
+              </span>
+              <ArrowUpRight className="w-4 h-4 md:w-6 md:h-6 text-primary flex-shrink-0" />
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <Navbar />
+      <Hero />
+      <BrandCarousel />
+      <CustomerStories />
+      <VerificationProcess />
+      <Features />
+      <BlacklistSection />
+      <FAQ />
+      <Footer />
+      
+      <VerifyFooter
+        registrationNumber={demoRegistrationNumber}
+        verifyUrl={demoVerifyUrl}
+        isPreview={true}
+      />
+    </div>
+  );
+};
+
+const Index = () => {
+  return (
+    <TranslationProvider>
+      <IndexContent />
     </TranslationProvider>
   );
 };
