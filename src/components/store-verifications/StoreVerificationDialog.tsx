@@ -5,9 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Copy, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { generateVerifyUrl } from "@/lib/verification";
-import { DocumentsSection } from "./DocumentsSection";
-import { StoreDetailsSection } from "./StoreDetailsSection";
-import { BadgeCodeDisplay } from "../verification-badges/BadgeCodeDisplay";
+import { DocumentsSection } from "@/components/verification-badges/DocumentsSection";
+import { StoreDetailsSection } from "@/components/verification-badges/StoreDetailsSection";
+import { BadgeCodeDisplay } from "@/components/verification-badges/BadgeCodeDisplay";
 import type { Store, Document } from "./types";
 
 interface StoreVerificationDialogProps {
@@ -107,7 +107,11 @@ export function StoreVerificationDialog({
                           )}
                         </Button>
                       </div>
-                      <BadgeCodeDisplay code={code} />
+                      <BadgeCodeDisplay 
+                        code={code}
+                        preview={<div>Badge Preview</div>}
+                        title={`${type === "topbar" ? "Top Bar" : "Footer"} Badge Code`}
+                      />
                     </div>
                   );
                 })}
