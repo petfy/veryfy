@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link, Outlet } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, ShieldCheck, AlertOctagon, LogOut, Menu } from "lucide-react";
+import { LayoutDashboard, ShieldCheck, AlertOctagon, LogOut, Menu, Flag, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LanguageSelector } from "./LanguageSelector";
 import { useTranslation } from "@/contexts/TranslationContext";
@@ -55,11 +55,6 @@ export default function AdminLayout() {
     return () => subscription.unsubscribe();
   }, [navigate, toast]);
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate("/login");
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -68,6 +63,8 @@ export default function AdminLayout() {
     { icon: LayoutDashboard, label: "dashboard", path: "/admin" },
     { icon: ShieldCheck, label: "storeVerifications", path: "/admin/verifications" },
     { icon: AlertOctagon, label: "scamReports", path: "/admin/reports" },
+    { icon: Flag, label: "approvedScams", path: "/admin/approved-scams" },
+    { icon: User, label: "accountSettings", path: "/admin/account" },
   ];
 
   return (
