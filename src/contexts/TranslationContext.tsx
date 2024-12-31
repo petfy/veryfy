@@ -39,7 +39,14 @@ const translations: Translations = {
     documents: "Documents",
     approve: "Approve",
     reject: "Reject",
-    close: "Close"
+    close: "Close",
+    // Form Fields
+    uploadLogoDescription: "Upload your store logo",
+    logoRecommendedSize: "Recommended size: 512x512px",
+    uploadEvidence: "Upload Evidence",
+    description: "Description",
+    submit: "Submit",
+    cancel: "Cancel"
   },
   es: {
     dashboard: "Panel de Control",
@@ -73,7 +80,14 @@ const translations: Translations = {
     documents: "Documentos",
     approve: "Aprobar",
     reject: "Rechazar",
-    close: "Cerrar"
+    close: "Cerrar",
+    // Form Fields
+    uploadLogoDescription: "Sube el logo de tu tienda",
+    logoRecommendedSize: "Tamaño recomendado: 512x512px",
+    uploadEvidence: "Subir Evidencia",
+    description: "Descripción",
+    submit: "Enviar",
+    cancel: "Cancelar"
   },
   fr: {
     dashboard: "Tableau de Bord",
@@ -107,7 +121,14 @@ const translations: Translations = {
     documents: "Documents",
     approve: "Approuver",
     reject: "Rejeter",
-    close: "Fermer"
+    close: "Fermer",
+    // Form Fields
+    uploadLogoDescription: "Téléchargez le logo de votre magasin",
+    logoRecommendedSize: "Taille recommandée : 512x512px",
+    uploadEvidence: "Télécharger une Preuve",
+    description: "Description",
+    submit: "Soumettre",
+    cancel: "Annuler"
   },
   de: {
     dashboard: "Übersicht",
@@ -141,7 +162,14 @@ const translations: Translations = {
     documents: "Dokumente",
     approve: "Genehmigen",
     reject: "Ablehnen",
-    close: "Schließen"
+    close: "Schließen",
+    // Form Fields
+    uploadLogoDescription: "Laden Sie Ihr Geschäftslogo hoch",
+    logoRecommendedSize: "Empfohlene Größe: 512x512px",
+    uploadEvidence: "Beweise Hochladen",
+    description: "Beschreibung",
+    submit: "Einreichen",
+    cancel: "Abbrechen"
   },
 };
 
