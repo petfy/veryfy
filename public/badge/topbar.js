@@ -95,6 +95,53 @@
     .veryfy-store-info.active {
       display: block;
     }
+    .veryfy-store-content {
+      max-width: 64rem;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    .veryfy-store-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .veryfy-store-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 9999px;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #6b7280;
+    }
+    .veryfy-store-details h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #111827;
+      margin: 0 0 0.5rem 0;
+    }
+    .veryfy-store-details a {
+      color: #6b7280;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .veryfy-store-details a:hover {
+      color: #4f46e5;
+    }
+    .veryfy-store-badge {
+      display: inline-flex;
+      align-items: center;
+      background: #f3f4f6;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      color: #374151;
+      margin-top: 0.5rem;
+    }
     @keyframes slideIn {
       from { transform: translateX(-20px); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
@@ -127,7 +174,23 @@
         </span>
       </div>
       <div id="veryfy-store-info" class="veryfy-store-info">
-        <iframe src="${verifyUrl}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+        <div class="veryfy-store-content">
+          <div class="veryfy-store-header">
+            <div class="veryfy-store-logo">
+              V
+            </div>
+            <div class="veryfy-store-details">
+              <h3>Verified Store</h3>
+              <a href="${verifyUrl}" target="_blank">View Verification Details</a>
+              <div class="veryfy-store-badge">
+                <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Verified by Veryfy
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     `;
 
