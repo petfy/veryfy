@@ -4,6 +4,14 @@
   const currentScript = scripts[scripts.length - 1];
   const registrationNumber = currentScript.getAttribute('data-registration');
   const verifyUrl = currentScript.getAttribute('data-verify-url');
+  const currentDomain = window.location.hostname;
+  const allowedDomain = currentScript.getAttribute('data-allowed-domain') || '';
+
+  // Check if the current domain is allowed
+  if (allowedDomain && !currentDomain.includes(allowedDomain)) {
+    console.error('Badge not authorized for this domain');
+    return;
+  }
 
   // Create and inject styles
   const style = document.createElement('style');
@@ -34,6 +42,10 @@
     .veryfy-topbar-text {
       font-size: 0.875rem;
       color: #374151;
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      white-space: nowrap;
     }
     .veryfy-topbar-link {
       color: #16a34a;
@@ -44,11 +56,12 @@
       text-decoration: underline;
     }
     .veryfy-topbar-store {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       color: #4f46e5;
       cursor: pointer;
       font-size: 0.875rem;
+      margin-left: 0.5rem;
     }
     .veryfy-topbar-store svg {
       width: 16px;
