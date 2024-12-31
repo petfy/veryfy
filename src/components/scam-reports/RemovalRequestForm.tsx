@@ -31,9 +31,10 @@ type RemovalRequestFormValues = z.infer<typeof removalRequestSchema>;
 
 interface RemovalRequestFormProps {
   scamReportId: string;
+  onSuccess?: () => void;
 }
 
-export function RemovalRequestForm({ scamReportId }: RemovalRequestFormProps) {
+export function RemovalRequestForm({ scamReportId, onSuccess }: RemovalRequestFormProps) {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,11 +58,13 @@ export function RemovalRequestForm({ scamReportId }: RemovalRequestFormProps) {
         evidenceUrl = uploadData.path;
       }
 
-      const { error } = await supabase.from("removal_requests").insert({
-        scam_report_id: scamReportId,
-        reason: data.reason,
-        evidence_url: evidenceUrl,
-      });
+      const { error } = await supabase
+        .from("removal_requests")
+        .insert({
+          scam_report_id: scamReportId,
+          reason: data.reason,
+          evidence_url: evidenceUrl,
+        });
 
       if (error) throw error;
 
@@ -69,6 +72,8 @@ export function RemovalRequestForm({ scamReportId }: RemovalRequestFormProps) {
         title: t("removalRequestSubmitted"),
         description: t("removalRequestSubmittedDesc"),
       });
+      
+      onSuccess?.();
     } catch (error) {
       toast({
         variant: "destructive",

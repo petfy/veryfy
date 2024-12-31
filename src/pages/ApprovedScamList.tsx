@@ -25,13 +25,25 @@ import { RemovalRequestForm } from "@/components/scam-reports/RemovalRequestForm
 
 type SortField = "customer_name" | "report_count" | "created_at";
 
+interface ScamReport {
+  id: string;
+  customer_first_name: string | null;
+  customer_last_name: string | null;
+  customer_phone: string | null;
+  customer_address: string | null;
+  customer_city: string | null;
+  customer_country: string | null;
+  reported_email: string;
+  report_count: number;
+}
+
 export default function ApprovedScamList() {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
-  const { data: reports, isLoading } = useQuery({
+  const { data: reports = [], isLoading } = useQuery({
     queryKey: ["approved-scams", sortField, sortDirection],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -52,7 +64,7 @@ export default function ApprovedScamList() {
         return [];
       }
 
-      return data;
+      return data as ScamReport[];
     },
   });
 
@@ -108,7 +120,7 @@ export default function ApprovedScamList() {
               </TableCell>
               <TableCell>
                 <div className="space-y-1">
-                  <p>{report.customer_email}</p>
+                  <p>{report.reported_email}</p>
                   <p>{report.customer_phone}</p>
                   <p>
                     {report.customer_address}, {report.customer_city},{" "}
@@ -133,8 +145,8 @@ export default function ApprovedScamList() {
                         </DropdownMenuItem>
                       </DialogTrigger>
                       <ScamReportForm
-                        defaultValues={{
-                          customer_email: report.reported_email,
+                        initialData={{
+                          reported_email: report.reported_email,
                           customer_first_name: report.customer_first_name,
                           customer_last_name: report.customer_last_name,
                           customer_phone: report.customer_phone,
