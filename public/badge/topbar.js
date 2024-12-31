@@ -7,6 +7,12 @@
   const currentDomain = window.location.hostname;
   const allowedDomain = currentScript.getAttribute('data-allowed-domain') || '';
 
+  // Validate required attributes
+  if (!registrationNumber || !verifyUrl) {
+    console.error('Missing required attributes: data-registration and data-verify-url must be provided');
+    return;
+  }
+
   // Check if the current domain is allowed
   if (allowedDomain && !currentDomain.includes(allowedDomain)) {
     console.error('Badge not authorized for this domain');
@@ -158,8 +164,11 @@
   // Function to fetch store data
   async function fetchStoreData() {
     try {
-      // Log the URL being fetched for debugging
-      console.log('Fetching store data from:', `${verifyUrl}/api/store-data?registration=${registrationNumber}`);
+      console.log('Fetching store data with:', {
+        verifyUrl,
+        registrationNumber,
+        endpoint: `${verifyUrl}/api/verification-badges/${registrationNumber}`
+      });
       
       const response = await fetch(`${verifyUrl}/api/verification-badges/${registrationNumber}`);
       if (!response.ok) {
