@@ -1,12 +1,8 @@
-import * as z from "zod";
+import { z } from "zod";
 
 export const scamReportSchema = z.object({
-  reported_email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters.",
-  }),
+  reported_email: z.string().email(),
+  description: z.string().min(1),
   customer_first_name: z.string().optional(),
   customer_last_name: z.string().optional(),
   customer_phone: z.string().optional(),
@@ -16,3 +12,8 @@ export const scamReportSchema = z.object({
 });
 
 export type ScamReportFormData = z.infer<typeof scamReportSchema>;
+
+export interface ScamReportFormProps {
+  onSuccess?: () => void;
+  initialData?: Partial<ScamReportFormData>;
+}

@@ -22,13 +22,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { CustomerInfoFields } from "./CustomerInfoFields";
-import { scamReportSchema, type ScamReportFormData } from "./types";
+import { scamReportSchema, type ScamReportFormData, type ScamReportFormProps } from "./types";
 
-interface ScamReportFormProps {
-  onSuccess: () => void;
-}
-
-export function ScamReportForm({ onSuccess }: ScamReportFormProps) {
+export function ScamReportForm({ onSuccess, initialData }: ScamReportFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -36,14 +32,14 @@ export function ScamReportForm({ onSuccess }: ScamReportFormProps) {
   const form = useForm<ScamReportFormData>({
     resolver: zodResolver(scamReportSchema),
     defaultValues: {
-      reported_email: "",
-      description: "",
-      customer_first_name: "",
-      customer_last_name: "",
-      customer_phone: "",
-      customer_address: "",
-      customer_city: "",
-      customer_country: "",
+      reported_email: initialData?.reported_email || "",
+      description: initialData?.description || "",
+      customer_first_name: initialData?.customer_first_name || "",
+      customer_last_name: initialData?.customer_last_name || "",
+      customer_phone: initialData?.customer_phone || "",
+      customer_address: initialData?.customer_address || "",
+      customer_city: initialData?.customer_city || "",
+      customer_country: initialData?.customer_country || "",
     },
   });
 
