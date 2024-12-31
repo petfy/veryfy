@@ -35,9 +35,13 @@
       animation: slideIn 0.5s ease-out;
     }
     .veryfy-topbar-check {
-      color: #16a34a;
       width: 16px;
       height: 16px;
+      fill: none;
+      stroke: #16a34a;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
     .veryfy-topbar-text {
       font-size: 0.875rem;
@@ -67,6 +71,11 @@
       width: 16px;
       height: 16px;
       margin: 0 0.25rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
     @keyframes slideIn {
       from { transform: translateX(-20px); opacity: 0; }
@@ -81,7 +90,7 @@
     container.className = 'veryfy-topbar';
     container.innerHTML = `
       <div class="veryfy-topbar-content">
-        <svg class="veryfy-topbar-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="veryfy-topbar-check" viewBox="0 0 24 24">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
         <span class="veryfy-topbar-text">
@@ -89,12 +98,13 @@
           <a href="https://veryfy.link" target="_blank" rel="noopener noreferrer" class="veryfy-topbar-link">
             Veryfy
           </a>
-          <span class="veryfy-topbar-store" onclick="window.open('${verifyUrl}', '_blank')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20 7h-9m9 0v9m0-9-9 9"></path>
+          <button class="veryfy-topbar-store" onclick="window.open('${verifyUrl}', 'verifyStore', 'width=600,height=600,location=no,menubar=no,scrollbars=yes,status=no,toolbar=no'); return false;">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
             </svg>
             Check Store
-          </span>
+          </button>
         </span>
       </div>
     `;
