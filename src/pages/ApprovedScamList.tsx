@@ -108,7 +108,7 @@ export default function ApprovedScamList() {
               </TableCell>
               <TableCell>
                 <div className="space-y-1">
-                  <p>{report.customer_email}</p>
+                  <p>{report.reported_email}</p>
                   <p>{report.customer_phone}</p>
                   <p>
                     {report.customer_address}, {report.customer_city},{" "}
@@ -133,14 +133,11 @@ export default function ApprovedScamList() {
                         </DropdownMenuItem>
                       </DialogTrigger>
                       <ScamReportForm
-                        defaultValues={{
-                          customer_email: report.reported_email,
-                          customer_first_name: report.customer_first_name,
-                          customer_last_name: report.customer_last_name,
-                          customer_phone: report.customer_phone,
-                          customer_address: report.customer_address,
-                          customer_city: report.customer_city,
-                          customer_country: report.customer_country,
+                        onSuccess={() => {
+                          toast({
+                            title: "Success",
+                            description: "Report submitted successfully",
+                          });
                         }}
                       />
                     </Dialog>
