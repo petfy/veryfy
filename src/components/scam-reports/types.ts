@@ -17,3 +17,19 @@ export interface ScamReportFormProps {
   onSuccess?: () => void;
   initialData?: Partial<ScamReportFormData>;
 }
+
+export interface ScamReport {
+  id: string;
+  reported_email: string;
+  description: string;
+  status: string;
+  created_at: string;
+  evidence_url: string;
+  customer_first_name?: string;
+  customer_last_name?: string;
+  customer_phone?: string;
+  customer_address?: string;
+  customer_city?: string;
+  customer_country?: string;
+  report_count: number;
+}
