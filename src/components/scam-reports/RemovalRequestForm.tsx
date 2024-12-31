@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import type { RemovalRequestsTable } from "@/integrations/supabase/types/tables/removal-requests";
 
 const removalRequestSchema = z.object({
   reason: z.string().min(1, "Reason is required"),
@@ -58,13 +59,15 @@ export function RemovalRequestForm({ scamReportId, onSuccess }: RemovalRequestFo
         evidenceUrl = uploadData.path;
       }
 
+      const insertData: RemovalRequestsTable['Insert'] = {
+        scam_report_id: scamReportId,
+        reason: data.reason,
+        evidence_url: evidenceUrl,
+      };
+
       const { error } = await supabase
         .from("removal_requests")
-        .insert({
-          scam_report_id: scamReportId,
-          reason: data.reason,
-          evidence_url: evidenceUrl,
-        });
+        .insert(insertData);
 
       if (error) throw error;
 

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { ScamReportsTable } from "@/integrations/supabase/types/tables/scam-reports";
 
 export const scamReportSchema = z.object({
   reported_email: z.string().email(),
@@ -18,18 +19,4 @@ export interface ScamReportFormProps {
   initialData?: Partial<ScamReportFormData>;
 }
 
-export interface ScamReport {
-  id: string;
-  reported_email: string;
-  description: string;
-  status: string;
-  created_at: string;
-  evidence_url: string;
-  customer_first_name?: string;
-  customer_last_name?: string;
-  customer_phone?: string;
-  customer_address?: string;
-  customer_city?: string;
-  customer_country?: string;
-  report_count: number;
-}
+export type ScamReport = ScamReportsTable['Row'];

@@ -35,7 +35,7 @@ export default function ApprovedScamList() {
         .from("scam_reports")
         .select(`
           *,
-          report_count:count(*) over (partition by reported_email)
+          report_count:count() over (partition by reported_email)
         `)
         .eq("status", "approved")
         .order(sortField, { ascending: sortDirection === "asc" });

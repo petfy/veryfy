@@ -1,3 +1,7 @@
+import { ProfilesTable } from './tables/profiles';
+import { ScamReportsTable } from './tables/scam-reports';
+import { RemovalRequestsTable } from './tables/removal-requests';
+
 export type Json =
   | string
   | number
