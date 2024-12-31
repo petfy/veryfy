@@ -41,7 +41,8 @@ export function StoreVerificationDialog({
         verification_badges (
           id,
           registration_number,
-          badge_type
+          badge_type,
+          allowed_domain
         )
       `)
       .eq("id", storeId)
@@ -58,8 +59,9 @@ export function StoreVerificationDialog({
     }
   }, [store]);
 
-  const getBadgeCode = (registrationNumber: string, type: "topbar" | "footer") => {
-    const verifyUrl = generateVerifyUrl(registrationNumber);
+  const getBadgeCode = (badge: any) => {
+    const verifyUrl = generateVerifyUrl(badge.registration_number);
+    const type = badge.badge_type;
     
     const code = `<!-- Veryfy ${type === "topbar" ? "Top Bar" : "Footer"} Badge -->
 <script>
@@ -67,15 +69,18 @@ export function StoreVerificationDialog({
     // Create container element
     const container = document.createElement('div');
     container.id = 'verify-link-${type}';
-    ${type === "topbar" ? "document.body.insertBefore(container, document.body.firstChild);" : "document.body.appendChild(container);"}
+    ${type === "topbar" 
+      ? "document.body.insertBefore(container, document.body.firstChild);" 
+      : "document.body.appendChild(container);"}
     
-    // Load Verify.link badge script
+    // Load Veryfy badge script
     const script = document.createElement('script');
     script.src = 'https://veryfy.link/badge/${type}.js';
     script.async = true;
     script.defer = true;
-    script.setAttribute('data-registration', '${registrationNumber}');
+    script.setAttribute('data-registration', '${badge.registration_number}');
     script.setAttribute('data-verify-url', '${verifyUrl}');
+    script.setAttribute('data-allowed-domain', '${badge.allowed_domain}');
     document.head.appendChild(script);
   })();
 </script>`;
@@ -118,8 +123,8 @@ export function StoreVerificationDialog({
                     {badges.map((badge) => (
                       <BadgeCodeDisplay
                         key={badge.id}
-                        title={`${badge.badge_type} Badge - Registration: ${badge.registration_number}`}
-                        code={getBadgeCode(badge.registration_number, badge.badge_type)}
+                        title={`${badge.badge_type === 'topbar' ? 'Top Bar' : 'Footer'} Badge - Registration: ${badge.registration_number}`}
+                        code={getBadgeCode(badge)}
                         preview={
                           badge.badge_type === "topbar" ? (
                             <div className="w-full">
@@ -133,6 +138,7 @@ export function StoreVerificationDialog({
                             <VerifyFooter
                               registrationNumber={badge.registration_number}
                               verifyUrl={generateVerifyUrl(badge.registration_number)}
+                              isPreview={true}
                             />
                           )
                         }
