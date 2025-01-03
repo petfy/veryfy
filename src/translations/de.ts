@@ -84,8 +84,15 @@ export const de = {
   cookiePolicy: "Cookie-Richtlinie",
   copyright: "© {0} Veryfy. Alle Rechte vorbehalten.",
 
-  // TopBar Messages
-  getVerifyBadge: "Holen Sie sich Ihr offizielles Veryfy Vertrauenssiegel",
-  verifiedStore: "Verifizierter Offizieller Shop von",
-  checkStore: "Shop Überprüfen",
+  // Store Profile Modal
+  closeDetails: "Details schließen",
+  verificationDetails: "Verifizierungsdetails",
+  verifiedStore: "Verifizierter Shop",
+  status: "Status",
+  verifiedSince: "Verifiziert seit",
+  storeInformation: "Shop-Informationen",
+  storeVerificationMessage: "Dieser Shop wurde von Veryfy verifiziert und erfüllt unsere Sicherheits- und Vertrauensstandards.",
+  pending: "ausstehend",
+  verified: "verifiziert",
+  rejected: "abgelehnt",
 };

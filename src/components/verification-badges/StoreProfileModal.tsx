@@ -1,6 +1,7 @@
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "@/contexts/TranslationContext";
 import type { Store } from "../store-verifications/types";
 
 interface StoreProfileModalProps {
@@ -29,6 +30,8 @@ export function StoreProfileModal({
   isPreview = false,
   position = "top" 
 }: StoreProfileModalProps) {
+  const { t } = useTranslation();
+  
   console.log("StoreProfileModal rendered with:", {
     store,
     isOpen,
@@ -57,7 +60,7 @@ export function StoreProfileModal({
           <button 
             onClick={() => onOpenChange(false)}
             className="absolute right-4 top-4 text-gray-500 hover:text-gray-700 transition-colors"
-            aria-label="Close details"
+            aria-label={t("closeDetails")}
           >
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
@@ -100,23 +103,23 @@ export function StoreProfileModal({
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <h4 className="text-sm font-semibold mb-2">Verification Details</h4>
+              <h4 className="text-sm font-semibold mb-2">{t("verificationDetails")}</h4>
               <div className="space-y-2">
                 <Badge variant="secondary" className="mb-2">
-                  Verified Store
+                  {t("verifiedStore")}
                 </Badge>
                 <p className="text-sm text-muted-foreground">
-                  Status: {displayStore.verification_status}
+                  {t("status")}: {t(displayStore.verification_status)}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Verified since: {new Date(displayStore.created_at).toLocaleDateString()}
+                  {t("verifiedSince")}: {new Date(displayStore.created_at).toLocaleDateString()}
                 </p>
               </div>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-2">Store Information</h4>
+              <h4 className="text-sm font-semibold mb-2">{t("storeInformation")}</h4>
               <p className="text-sm text-muted-foreground">
-                This store has been verified by Veryfy and meets our security and trust standards.
+                {t("storeVerificationMessage")}
               </p>
             </div>
           </div>

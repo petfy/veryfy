@@ -88,4 +88,16 @@ export const fr = {
   getVerifyBadge: "Obtenez votre Badge de Confiance Veryfy",
   verifiedStore: "Boutique Officielle Vérifiée par",
   checkStore: "Vérifier la Boutique",
+
+  // Store Profile Modal
+  closeDetails: "Fermer les détails",
+  verificationDetails: "Détails de Vérification",
+  verifiedStore: "Boutique Vérifiée",
+  status: "Statut",
+  verifiedSince: "Vérifié depuis",
+  storeInformation: "Informations sur la Boutique",
+  storeVerificationMessage: "Cette boutique a été vérifiée par Veryfy et répond à nos normes de sécurité et de confiance.",
+  pending: "en attente",
+  verified: "vérifié",
+  rejected: "rejeté",
 };
