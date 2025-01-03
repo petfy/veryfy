@@ -17,15 +17,15 @@
   const translations = {
     en: {
       verifiedStore: "Verified Official Store by",
-      checkStore: "Review Store"
+      checkStore: "Check Store"
     },
     es: {
       verifiedStore: "Tienda Oficial Verificada por",
-      checkStore: "Revisar Tienda"
+      checkStore: "Verificar Tienda"
     },
     fr: {
       verifiedStore: "Boutique Officielle Vérifiée par",
-      checkStore: "Examiner la Boutique"
+      checkStore: "Vérifier la Boutique"
     },
     de: {
       verifiedStore: "Verifizierter Offizieller Shop von",
