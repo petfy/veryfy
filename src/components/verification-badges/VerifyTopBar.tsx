@@ -3,6 +3,7 @@ import { Check, ShoppingBag } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { StoreProfileModal } from "./StoreProfileModal";
 import type { Store } from "../store-verifications/types";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 interface VerifyTopBarProps {
   registrationNumber: string;
@@ -14,6 +15,7 @@ export function VerifyTopBar({ registrationNumber, verifyUrl, isPreview = false 
   const [isVisible, setIsVisible] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [store, setStore] = useState<Store | null>(null);
+  const { t, currentLanguage, setCurrentLanguage } = useTranslation();
 
   useEffect(() => {
     console.log("VerifyTopBar mounted with registration:", registrationNumber);
@@ -27,6 +29,45 @@ export function VerifyTopBar({ registrationNumber, verifyUrl, isPreview = false 
       return () => clearTimeout(timer);
     }
   }, [isPreview]);
+
+  useEffect(() => {
+    detectUserLanguage();
+  }, []);
+
+  const detectUserLanguage = async () => {
+    try {
+      // First try to get user's country from IP
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+      const countryCode = data.country_code;
+      
+      // Map country codes to languages
+      const COUNTRY_TO_LANGUAGE: { [key: string]: string } = {
+        US: "en",
+        GB: "en",
+        ES: "es",
+        MX: "es",
+        AR: "es",
+        FR: "fr",
+        DE: "de",
+        AT: "de",
+        CH: "de",
+      };
+      
+      if (countryCode && COUNTRY_TO_LANGUAGE[countryCode]) {
+        setCurrentLanguage(COUNTRY_TO_LANGUAGE[countryCode] as any);
+      } else {
+        // Fallback to browser language
+        const browserLang = navigator.language.split("-")[0];
+        if (["en", "es", "fr", "de"].includes(browserLang)) {
+          setCurrentLanguage(browserLang as any);
+        }
+      }
+    } catch (error) {
+      console.error("Error detecting language:", error);
+      setCurrentLanguage("en");
+    }
+  };
 
   const validateBadge = async () => {
     try {
@@ -165,7 +206,7 @@ export function VerifyTopBar({ registrationNumber, verifyUrl, isPreview = false 
           <div className="flex items-center space-x-2 animate-slide-in-left">
             <Check className="h-4 w-4 text-green-600 opacity-0 animate-appear" />
             <span className="text-xs font-medium text-gray-700 opacity-0 animate-appear flex items-center flex-wrap">
-              <span className="whitespace-nowrap">Verified Official Store by{' '}</span>
+              <span className="whitespace-nowrap">{t("verifiedStore")}{' '}</span>
               <a 
                 href="https://veryfy.link" 
                 target="_blank" 
@@ -180,7 +221,7 @@ export function VerifyTopBar({ registrationNumber, verifyUrl, isPreview = false 
                   onClick={handleCheckStore}
                   className="text-blue-600 hover:text-blue-800 text-xs"
                 >
-                  Check Store
+                  {t("checkStore")}
                 </button>
               </span>
             </span>

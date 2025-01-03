@@ -13,6 +13,47 @@
     return;
   }
 
+  // Translations object
+  const translations = {
+    en: {
+      verifiedStore: "Verified Official Store by",
+      checkStore: "Check Store"
+    },
+    es: {
+      verifiedStore: "Tienda Oficial Verificada por",
+      checkStore: "Verificar Tienda"
+    },
+    fr: {
+      verifiedStore: "Boutique Officielle Vérifiée par",
+      checkStore: "Vérifier la Boutique"
+    },
+    de: {
+      verifiedStore: "Verifizierter Offizieller Shop von",
+      checkStore: "Shop Überprüfen"
+    }
+  };
+
+  // Function to detect user's language
+  async function detectLanguage() {
+    try {
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+      const countryCode = data.country_code;
+      
+      const COUNTRY_TO_LANGUAGE = {
+        US: "en", GB: "en",
+        ES: "es", MX: "es", AR: "es",
+        FR: "fr",
+        DE: "de", AT: "de", CH: "de"
+      };
+      
+      return COUNTRY_TO_LANGUAGE[countryCode] || "en";
+    } catch (error) {
+      console.error('Error detecting language:', error);
+      return "en";
+    }
+  }
+
   // Create and inject styles
   const style = document.createElement('style');
   style.textContent = `
@@ -150,8 +191,13 @@
   document.head.appendChild(style);
 
   // Create topbar content
-  const container = document.getElementById('verify-link-topbar');
-  if (container) {
+  async function createTopBar() {
+    const container = document.getElementById('verify-link-topbar');
+    if (!container) return;
+
+    const language = await detectLanguage();
+    const t = translations[language] || translations.en;
+
     container.className = 'veryfy-topbar';
     container.innerHTML = `
       <div class="veryfy-topbar-content">
@@ -159,7 +205,7 @@
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
         <span class="veryfy-topbar-text">
-          Verified Official Store by
+          ${t.verifiedStore}
           <a href="https://veryfy.link" target="_blank" rel="noopener noreferrer" class="veryfy-topbar-link">
             Veryfy
           </a>
@@ -169,21 +215,19 @@
               <path d="M3 6h18"></path>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
-            Check Store
+            ${t.checkStore}
           </button>
         </span>
       </div>
       <div id="veryfy-store-info" class="veryfy-store-info">
         <div class="veryfy-store-content">
           <div class="veryfy-store-header">
-            <div class="veryfy-store-logo">
-              V
-            </div>
+            <div class="veryfy-store-logo">V</div>
             <div class="veryfy-store-details">
               <h3>Verified Store</h3>
               <a href="${verifyUrl}" target="_blank">View Verification Details</a>
               <div class="veryfy-store-badge">
-                <svg class="veryfy-topbar-check" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
+                <svg class="veryfy-topbar-check" viewBox="0 0 24 24">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
                 Verified by Veryfy
@@ -202,4 +246,7 @@
       }
     };
   }
+
+  // Initialize the topbar
+  createTopBar();
 })();
