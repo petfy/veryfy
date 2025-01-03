@@ -211,7 +211,7 @@ export function VerifyTopBar({ registrationNumber, verifyUrl, isPreview = false 
                 href="https://veryfy.link" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-primary hover:text-primary/80 transition-colors duration-300 mx-1"
+                className="text-green-600 hover:text-green-800 transition-colors duration-300 mx-1"
               >
                 Veryfy
               </a>

@@ -86,13 +86,13 @@ export const es = {
 
   // TopBar Messages
   getVerifyBadge: "Obtén tu Insignia de Confianza Veryfy",
-  verifiedStoreBy: "Tienda Oficial Verificada por",
-  checkStore: "Revisar Tienda",
+  verifiedStore: "Tienda Oficial Verificada por",
+  checkStore: "Verificar Tienda",
 
   // Store Profile Modal
   closeDetails: "Cerrar detalles",
   verificationDetails: "Detalles de Verificación",
-  storeStatus: "Estado de la Tienda",
+  verifiedStore: "Tienda Verificada",
   status: "Estado",
   verifiedSince: "Verificado desde",
   storeInformation: "Información de la Tienda",
