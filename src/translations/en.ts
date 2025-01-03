@@ -87,12 +87,12 @@ export const en = {
   // TopBar Messages
   getVerifyBadge: "Get your official Veryfy Trust Badge",
   verifiedStore: "Verified Official Store by",
-  checkStore: "Check Store",
+  checkStore: "Review Store",
 
   // Store Profile Modal
   closeDetails: "Close details",
   verificationDetails: "Verification Details",
-  verifiedStore: "Verified Store",
+  storeStatus: "Store Status",
   status: "Status",
   verifiedSince: "Verified since",
   storeInformation: "Store Information",
